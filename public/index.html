@@ -24,6 +24,7 @@
         }
 
         body {
+            min-height: 100vh;
             font-family: sans-serif;
             background-size: cover;
             background-image: url('../bg.jpg')
@@ -72,7 +73,7 @@
             background-color: #000;
             background-color: rgba(0,0,0,0.7);
         }
-        form input {
+        input {
             box-sizing: border-box;
             width:100%;
             margin-bottom: 0.5em;
@@ -98,9 +99,6 @@
             background-color: rgba(0,0,0,0.7);
         }
 
-        footer{
-            align-self: baseline;
-        }
         </style>
         <link rel="manifest" href="/manifest.json" />
         <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
@@ -252,7 +250,5 @@
                 });
             });
         </script>
-
-
     </body>
 </html>

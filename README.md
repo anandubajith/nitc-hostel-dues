@@ -1,3 +1,3 @@
 # HOSTEL DUES
-- fix quirks mode - 	
+- fix preventDefault on chrome???
 - send push notification [ notify-users.js ] - add onesignal stuff backend
