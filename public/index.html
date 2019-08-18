@@ -142,10 +142,10 @@
         </main>
 
         <script>
-            const URL = "https://nitc-hostel-dues.firebaseio.com/";
+            const dbURL = "https://nitc-hostel-dues.firebaseio.com/";
             const result = document.querySelector('.result');  
 
-            fetch(URL+'last_updated.json')
+            fetch(dbURL+'last_updated.json')
                 .then(res => res.json())
                 .then(date => {
                     document.querySelector('.updated').innerHTML = 'Last Updated: <b>' + date + '</b>';
@@ -172,7 +172,7 @@
 
             function updateValue() {
                 let roll_no = document.getElementById('roll_no').value;
-                fetch(URL+roll_no+'.json')
+                fetch(dbURL+roll_no+'.json')
                   .then(res => res.json())
                   .then(data => {
                     if ( data == null) {
