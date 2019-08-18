@@ -6,35 +6,56 @@ admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
 	databaseURL: "https://nitc-hostel-dues.firebaseio.com"
 });
-var db = admin.database();
+const db = admin.database();
 
 function setLastUpdated(s) {
 	let date = s.split(' ').reverse().slice(0, 3).reverse().join(' ').replace(')', '').toUpperCase();
 	return db.ref('last_updated').set(date);
 }
 
-var total = 0;
 function success(result) {
+	let promises = [];
 	setLastUpdated(result.pageTables[0].tables[0][0]);
 	// use filter and flatMaps?
 	result.pageTables.map(page => {
 		page.tables.map(item => {
 			if (item[0].length === 9) {
-				db.ref(item[0]).set({
-					name: item[1],
-					due: item[2]
-				})
-				.then(() => {
-					console.log("Inserted "+item[0])
-				});
+				promises.push(
+					db.ref(item[0]).set({
+						name: item[1],
+						due: item[2]
+					})
+				);
 			}
 		})
 	});
+	return Promise.all(promises);
 }
+
 function error(e) {
 	console.error(e);
 }
 
-pdf_table_extractor("PDFs/BTECH_dues.pdf", success, error);
-pdf_table_extractor("PDFs/PG_dues.pdf", success, error);
-pdf_table_extractor("PDFs/PHD_dues.pdf", success, error);
+const fileNames = ['PDFs/BTECH_dues.pdf', 'PDFs/PG_dues.pdf', 'PDFs/PHD_dues.pdf'];
+
+function Extract(file) {
+    return new Promise(function(resolve, reject) {
+         pdf_table_extractor(file, resolve, reject);
+    });
+}
+
+filePromises = fileNames.map(
+					file => Extract(file)
+							.then(success)
+							.catch(error)
+				);
+
+Promise
+	.all(
+	   filePromises
+	)
+	.then(() => {
+		console.log("Successfully updated");
+		process.exit(0);
+	})
+	.catch(error);
