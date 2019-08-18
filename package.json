@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "download": "^7.1.0",
-    "download-file": "^0.1.5",
-    "pdf-table-extractor": "^1.0.3"
+    "pdf-table-extractor": "^1.0.3",
+    "rimraf": "^3.0.0"
   }
 }

@@ -12,6 +12,7 @@ var promises = [];
 function success(result) {
 	data = {}
 	data['last_updated'] = (result.pageTables[0].tables[0][0]).split(' ').reverse().slice(0, 3).reverse().join(' ').replace(')', '');
+	// use filter and flatMaps?
 	result.pageTables.map(page => {
 		page.tables.map(item => {
 			if (item[0].length === 9) {
