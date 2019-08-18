@@ -8,7 +8,7 @@ firebase-debug.log*
 
 # Firebase cache
 .firebase/
-
+PDFs/
 # Firebase config
 
 # Uncomment this if you'd like others to create their own Firebase project.

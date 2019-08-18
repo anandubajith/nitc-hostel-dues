@@ -1,13 +1,14 @@
-var download = require('download-file')
- 
-var url = "http://i.imgur.com/G9bDaPH.jpg"
- 
-var options = {
-    directory: "./images/cats/",
-    filename: "cat.gif"
-}
- 
-download(url, options, function(err){
-    if (err) throw err
-    console.log("meow")
-}) 
+const fs = require('fs');
+const download = require('download');
+const fileNames = ['BTECH_dues.pdf', 'PG_dues.pdf', 'PHD_dues.pdf'];
+
+Promise.all(
+	fileNames
+		.map(fileName => download(`http://nitc.ac.in/app/webroot/img/upload/${fileName}`, 'PDFs'))
+	)
+	.then(() => {
+	    console.log('Downloaded');
+	})
+	.catch((e) => {
+		console.error(e);
+	})
