@@ -28,16 +28,6 @@ function success(result) {
 	// SEND PUSH NOTIFICATIONP
 }
 
-pdf_table_extractor("BTECH_dues.pdf", success, e => {
+pdf_table_extractor("PDFs/BTECH_dues.pdf", success, e => {
 	console.log("ERROR: ", e);
-});
-
-return Promise.all(promises)
-  .then(function() {
-    console.log("Transaction promises completed! Exiting...");
-    process.exit(0);
-  })
-  .catch(function(error) {
-    console.log("Transactions failed:", error);
-    process.exit(1);
 });
