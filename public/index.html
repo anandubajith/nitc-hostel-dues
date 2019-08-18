@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <html>
     <head>
         <title>Hostel Dues | NIT Calicut</title>
@@ -121,7 +122,9 @@
                   
                 </div>
             </div>
-      
+      		<div class="message">
+      			about
+      		</div>
         </main>
 
         <script>
@@ -144,7 +147,7 @@
             });
 
             function updateValue() {
-                let roll_no = document.querySelector('input[type="text"]');
+                let roll_no = document.getElementById('roll_no');
                 firebase.database()
                     .ref(roll_no.value.toUpperCase())
                     .once('value')
