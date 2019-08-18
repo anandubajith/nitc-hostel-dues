@@ -1,0 +1,10 @@
+{
+  "name": "NIT-C Hostel Dues",
+  "short_name": "hostel-dues",
+  "theme_color": "#007bff",
+  "background_color": "#007bff",
+  "display": "browser",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/"
+}

@@ -6,7 +6,6 @@
         <meta charset="utf-8">
         <link rel="icon" href="../static/favicon.ico">
         <script src="/__/firebase/6.4.0/firebase-app.js"></script>
-        <script src="/__/firebase/6.4.0/firebase-messaging.js"></script>
         <script src="/__/firebase/6.4.0/firebase-database.js"></script>
         <script src="/__/firebase/init.js"></script>
         <style type="text/css">
@@ -101,6 +100,20 @@
             align-self: baseline;
         }
         </style>
+        <link rel="manifest" href="/manifest.json" />
+        <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+        <script>
+          var OneSignal = window.OneSignal || [];
+          OneSignal.push(function() {
+            OneSignal.init({
+              appId: "31eee611-f787-450c-8eaf-4c0b249c8e2f",
+              notifyButton: {
+                enable: false,
+              },
+            });
+            OneSignal.showNativePrompt();
+          });
+        </script>
     </head>
     <body>
         <nav>
@@ -123,8 +136,14 @@
                 </div>
             </div>
       		<div class="message">
-      			about
+                <a href="#" id="my-notification-button">Subscribe to Notifications</a>
+                &middot;
+                about
       		</div>
+             
+    <script>
+   
+    </script>
         </main>
 
         <script>
@@ -162,6 +181,79 @@
                         document.querySelector('.help-text').style.display = 'none';
                 });
             }
+            function onManageWebPushSubscriptionButtonClicked(event) {
+                getSubscriptionState().then(function(state) {
+                    if (state.isPushEnabled) {
+                        /* Subscribed, opt them out */
+                        OneSignal.setSubscription(false);
+                    } else {
+                        if (state.isOptedOut) {
+                            /* Opted out, opt them back in */
+                            OneSignal.setSubscription(true);
+                        } else {
+                            /* Unsubscribed, subscribe them */
+                            OneSignal.registerForPushNotifications();
+                        }
+                    }
+                });
+                event.preventDefault();
+            }
+
+            function updateMangeWebPushSubscriptionButton(buttonSelector) {
+                var hideWhenSubscribed = false;
+                var subscribeText = "Subscribe to Notifications";
+                var unsubscribeText = "Unsubscribe from Notifications";
+
+                getSubscriptionState().then(function(state) {
+                    var buttonText = !state.isPushEnabled || state.isOptedOut ? subscribeText : unsubscribeText;
+
+                    var element = document.querySelector(buttonSelector);
+                    if (element === null) {
+                        return;
+                    }
+
+                    element.removeEventListener('click', onManageWebPushSubscriptionButtonClicked);
+                    element.addEventListener('click', onManageWebPushSubscriptionButtonClicked);
+                    element.textContent = buttonText;
+
+                    if (state.hideWhenSubscribed && state.isPushEnabled) {
+                        element.style.display = "none";
+                    } else {
+                        element.style.display = "";
+                    }
+                });
+            }
+
+            function getSubscriptionState() {
+                return Promise.all([
+                  OneSignal.isPushNotificationsEnabled(),
+                  OneSignal.isOptedOut()
+                ]).then(function(result) {
+                    var isPushEnabled = result[0];
+                    var isOptedOut = result[1];
+
+                    return {
+                        isPushEnabled: isPushEnabled,
+                        isOptedOut: isOptedOut
+                    };
+                });
+            }
+
+            var OneSignal = OneSignal || [];
+            var buttonSelector = "#my-notification-button";
+
+            /* This example assumes you've already initialized OneSignal */
+            OneSignal.push(function() {
+                // If we're on an unsupported browser, do nothing
+                if (!OneSignal.isPushNotificationsSupported()) {
+                    return;
+                }
+                updateMangeWebPushSubscriptionButton(buttonSelector);
+                OneSignal.on("subscriptionChange", function(isSubscribed) {
+                    /* If the user's subscription state changes during the page's session, update the button text */
+                    updateMangeWebPushSubscriptionButton(buttonSelector);
+                });
+            });
         </script>
 
 
