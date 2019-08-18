@@ -1,17 +1,21 @@
 var pdf_table_extractor = require("pdf-table-extractor");
-
 var admin = require("firebase-admin");
-var serviceAccount = require("./service-key.json");
+var serviceAccount = require("../service-key.json");
 
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
 	databaseURL: "https://nitc-hostel-dues.firebaseio.com"
 });
 var db = admin.database();
-var promises = [];
+
+function setLastUpdated(s) {
+	let date = s.split(' ').reverse().slice(0, 3).reverse().join(' ').replace(')', '').toUpperCase();
+	return db.ref('last_updated').set(date);
+}
+
+var total = 0;
 function success(result) {
-	data = {}
-	data['last_updated'] = (result.pageTables[0].tables[0][0]).split(' ').reverse().slice(0, 3).reverse().join(' ').replace(')', '');
+	setLastUpdated(result.pageTables[0].tables[0][0]);
 	// use filter and flatMaps?
 	result.pageTables.map(page => {
 		page.tables.map(item => {
@@ -19,15 +23,18 @@ function success(result) {
 				db.ref(item[0]).set({
 					name: item[1],
 					due: item[2]
+				})
+				.then(() => {
+					console.log("Inserted "+item[0])
 				});
-				promises.push(db.ref(item[0]).transaction(function(current) { return (current || 0) + 1;}));
 			}
 		})
 	});
-
-	// SEND PUSH NOTIFICATIONP
+}
+function error(e) {
+	console.error(e);
 }
 
-pdf_table_extractor("PDFs/BTECH_dues.pdf", success, e => {
-	console.log("ERROR: ", e);
-});
+pdf_table_extractor("PDFs/BTECH_dues.pdf", success, error);
+pdf_table_extractor("PDFs/PG_dues.pdf", success, error);
+pdf_table_extractor("PDFs/PHD_dues.pdf", success, error);

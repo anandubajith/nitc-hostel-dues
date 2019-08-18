@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "download": "^7.1.0",
+    "firebase-admin": "^8.3.0",
     "pdf-table-extractor": "^1.0.3",
     "rimraf": "^3.0.0"
   }
