@@ -5,102 +5,102 @@
         <meta charset="utf-8">
         <link rel="icon" href="../static/favicon.ico">
         <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
-                <script src="/__/firebase/6.4.0/firebase-app.js"></script>
-<script src="/__/firebase/6.4.0/firebase-messaging.js"></script>
-<script src="/__/firebase/6.4.0/firebase-database.js"></script>
-<script src="/__/firebase/init.js"></script>
-  <style type="text/css">
-    html, body, div, form {
- margin: 0;
- padding: 0; 
-}
+        <script src="/__/firebase/6.4.0/firebase-app.js"></script>
+        <script src="/__/firebase/6.4.0/firebase-messaging.js"></script>
+        <script src="/__/firebase/6.4.0/firebase-database.js"></script>
+        <script src="/__/firebase/init.js"></script>
+        <style type="text/css">
+        html, body, div, form {
+            margin: 0;
+            padding: 0; 
+        }
 
-h1, h2, h3, h4, h5, h6 { 
-    font-weight:normal;
-}
+        h1, h2, h3, h4, h5, h6 { 
+            font-weight:normal;
+        }
 
-img {
-    border: 0;
-}
+        img {
+            border: 0;
+        }
 
-body {
-    font-family: sans-serif;
-    background-size: cover;
-    background-image: url('../bg.jpg')
-}
+        body {
+            font-family: sans-serif;
+            background-size: cover;
+            background-image: url('../bg.jpg')
+        }
 
-a {
-    color: #fff;
-}
+        a {
+            color: #fff;
+        }
 
-nav {
-    background: #007bff;
-    color: white;
-    padding: 1em;
-    display: flex;
-    align-items:center;
-    justify-content: center;
-    margin-bottom: 1em;
-}
-nav h1 {
-    margin:0;
-}
-nav img {
-    height: 45px;
-    width: 45px;
-    margin-right: 0.5em;
-}
+        nav {
+            background: #007bff;
+            color: white;
+            padding: 1em;
+            display: flex;
+            align-items:center;
+            justify-content: center;
+            margin-bottom: 1em;
+        }
+        nav h1 {
+            margin:0;
+        }
+        nav img {
+            height: 45px;
+            width: 45px;
+            margin-right: 0.5em;
+        }
 
-main {
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 400px;
-    margin: auto;
-    padding: 1em;
-}
-.notify {
-    color: red;
-    text-align: center;
-    font-weight: bold
-}
+        main {
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+            padding: 1em;
+        }
+        .notify {
+            color: red;
+            text-align: center;
+            font-weight: bold
+        }
 
-form {
-    box-sizing: border-box;
-    border-radius: 5px;
-    padding: 1em;
-    color: #fff;
-    background-color: #000;
-    background-color: rgba(0,0,0,0.7);
-}
-form input {
-    width: 100%;
-    margin-bottom: 0.5em;
-    padding: 1em;
-    border-radius: 5px;
-}
+        form {
+            box-sizing: border-box;
+            border-radius: 5px;
+            padding: 1em;
+            color: #fff;
+            background-color: #000;
+            background-color: rgba(0,0,0,0.7);
+        }
+        form input {
+            width: 100%;
+            margin-bottom: 0.5em;
+            padding: 1em;
+            border-radius: 5px;
+        }
 
-.button {
-    text-transform: uppercase;
-    font-weight: bold;
-    border:0;
-    border-radius: 5px;
-    background-color: #007bff;
-    color:#fff;
-}
+        .button {
+            text-transform: uppercase;
+            font-weight: bold;
+            border:0;
+            border-radius: 5px;
+            background-color: #007bff;
+            color:#fff;
+        }
 
-.message {
-    margin-top: 1em;
-    padding: 1em;
-    border-radius: 5px;
-    color: #fff;
-    background-color: #000;
-    background-color: rgba(0,0,0,0.7);
-}
+        .message {
+            margin-top: 1em;
+            padding: 1em;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #000;
+            background-color: rgba(0,0,0,0.7);
+        }
 
-footer{
-    align-self: baseline;
-}
-  </style>
+        footer{
+            align-self: baseline;
+        }
+        </style>
     </head>
     <body>
         <nav>
@@ -116,7 +116,7 @@ footer{
             </form>
             <div class="message">
             
-                <div><i>Enter your Roll no. to check hostel dues.</i></div>
+                <div class="help-text"><i>Enter your Roll no. to check hostel dues.</i></div>
                 <div class="updated"></div>
                 <div class="result">
                   
@@ -128,31 +128,37 @@ footer{
         <script>
             if ( localStorage.roll_no !== undefined ) {
                 document.getElementById('roll_no').value = localStorage.roll_no;
-                getValue();
+                updateValue();
             } 
             document.getElementById('roll_no').addEventListener('change',function() {
                 localStorage.roll_no = document.getElementById('roll_no').value;
             });
 
-              firebase.database().ref('last_updated').once('value').then(function(snapshot) {
-    document.querySelector('.updated').innerText = (snapshot.val());
-  });
+            firebase.database().ref('last_updated').once('value').then(function(snapshot) {
+                document.querySelector('.updated').innerHTML = `Last Updated: <b> ${snapshot.val()}</b>`;
+            });
 
-               document.getElementById('due_form').addEventListener('submit', function(e) {
+            document.getElementById('due_form').addEventListener('submit', function(e) {
                 e.preventDefault();
-              getValue();
-               })
+                updateValue();
+            });
 
-function getValue() {
-                 let roll_no = document.querySelector('input[type="text"]');
-           firebase.database().ref(roll_no.value.toUpperCase()).once('value').then(function(snapshot) {
-            if ( snapshot.val() == null) {
-              console.log('invalid');
-              return;
+            function updateValue() {
+                let roll_no = document.querySelector('input[type="text"]');
+                firebase.database()
+                    .ref(roll_no.value.toUpperCase())
+                    .once('value')
+                    .then(function(snapshot) {
+                        if ( snapshot.val() == null) {
+                            document.querySelector('.result')
+                            .innerHTML = '<b class="notify">Invalid Roll No</b>';
+                            return;
+                        }
+                        document.querySelector('.result')
+                            .innerHTML = `Name: <b>${snapshot.val().name}</b><br>Due: <b> ₹${snapshot.val().due}/-</b>`;
+                        document.querySelector('.help-text').style.display = 'none';
+                });
             }
-            document.querySelector('.result').innerHTML = `Name: ${snapshot.val().name} <br>Due: ${snapshot.val().due}`
-          });
-}
         </script>
 
 
