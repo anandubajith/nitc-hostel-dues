@@ -111,7 +111,6 @@
                 enable: false,
               },
             });
-            OneSignal.showNativePrompt();
           });
         </script>
     </head>
@@ -136,9 +135,9 @@
                 </div>
             </div>
       		<div class="message">
-                <a href="#" id="my-notification-button">Subscribe to Notifications</a>
+                <a href="#">about</a>
                 &middot;
-                about
+                <a href="#" id="subscribe" style="display:none">Subscribe to Notifications</a>
       		</div>
              
     <script>
@@ -240,7 +239,7 @@
             }
 
             var OneSignal = OneSignal || [];
-            var buttonSelector = "#my-notification-button";
+            var buttonSelector = "#subscribe";
 
             /* This example assumes you've already initialized OneSignal */
             OneSignal.push(function() {
