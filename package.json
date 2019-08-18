@@ -1,0 +1,16 @@
+{
+  "name": "hostel-dues",
+  "version": "1.0.0",
+  "description": "",
+  "main": "send-update-message.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "download-file": "^0.1.5",
+    "pdf-table-extractor": "^1.0.3"
+  }
+}
