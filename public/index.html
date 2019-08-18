@@ -6,9 +6,6 @@
         <meta charset="utf-8">
         <meta name="theme-color" content="#007bff">
         <link rel="icon" href="/favicon.ico">
-        <script src="/__/firebase/6.4.0/firebase-app.js"></script>
-        <script src="/__/firebase/6.4.0/firebase-database.js"></script>
-        <script src="/__/firebase/init.js"></script>
         <style type="text/css">
         html, body, div, form {
             margin: 0;
@@ -81,6 +78,9 @@
             border-radius: 5px;
         }
 
+        input:focus {
+            outline: 0;
+        }
         .button {
             text-transform: uppercase;
             font-weight: bold;
@@ -142,11 +142,16 @@
         </main>
 
         <script>
-            firebase.database().ref('last_updated').once('value').then(function(snapshot) {
-                document.querySelector('.updated').innerHTML = `Last Updated: <b> ${snapshot.val()}</b>`;
-            });
+            const URL = "https://nitc-hostel-dues.firebaseio.com/";
+            const result = document.querySelector('.result');  
 
-            if ( localStorage.roll_no !== undefined ) {
+            fetch(URL+'last_updated.json')
+                .then(res => res.json())
+                .then(date => {
+                    document.querySelector('.updated').innerHTML = 'Last Updated: <b>' + date + '</b>';
+                });
+
+            if ( localStorage.roll_no !== undefined && localStorage.roll_no != '' ) {
                 document.getElementById('roll_no').value = localStorage.roll_no;
                 updateValue();
             } 
@@ -156,25 +161,28 @@
 
             document.getElementById('due_form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                document.querySelector('.result').innerHTML = 'Loading';
+                result.innerText = 'Loading';
                 updateValue();
             });
+            document.getElementById('check').addEventListener('click', function(e) {
+                e.preventDefault();
+                result.innerText = 'Loading';
+                updateValue(); 
+            })
 
             function updateValue() {
-                let roll_no = document.getElementById('roll_no');
-                firebase.database()
-                    .ref(roll_no.value.toUpperCase())
-                    .once('value')
-                    .then(function(snapshot) {
-                        if ( snapshot.val() == null) {
-                            document.querySelector('.result')
-                            .innerHTML = '<b class="notify">Invalid Roll No</b>';
+                let roll_no = document.getElementById('roll_no').value;
+                fetch(URL+roll_no+'.json')
+                  .then(res => res.json())
+                  .then(data => {
+                    if ( data == null) {
+                            result.innerHTML = '<b class="notify">Invalid Roll No</b>';
                             return;
-                        }
-                        document.querySelector('.result')
-                            .innerHTML = `Name: <b>${snapshot.val().name}</b><br>Due: <b> ₹${snapshot.val().due}/-</b>`;
-                        document.querySelector('.help-text').style.display = 'none';
-                });
+                    }
+                    result.innerHTML = `Name: <b>${data.name}</b><br>Due: <b> ₹${data.due}/-</b>`;
+                    document.querySelector('.help-text').style.display = 'none';
+                  });
+                
             }
             function onManageWebPushSubscriptionButtonClicked(event) {
                 getSubscriptionState().then(function(state) {
