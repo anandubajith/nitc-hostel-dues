@@ -4,7 +4,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <meta charset="utf-8">
         <link rel="icon" href="../static/favicon.ico">
-        <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
         <script src="/__/firebase/6.4.0/firebase-app.js"></script>
         <script src="/__/firebase/6.4.0/firebase-messaging.js"></script>
         <script src="/__/firebase/6.4.0/firebase-database.js"></script>
@@ -126,16 +125,16 @@
         </main>
 
         <script>
+            firebase.database().ref('last_updated').once('value').then(function(snapshot) {
+                document.querySelector('.updated').innerHTML = `Last Updated: <b> ${snapshot.val()}</b>`;
+            });
+
             if ( localStorage.roll_no !== undefined ) {
                 document.getElementById('roll_no').value = localStorage.roll_no;
                 updateValue();
             } 
             document.getElementById('roll_no').addEventListener('change',function() {
                 localStorage.roll_no = document.getElementById('roll_no').value;
-            });
-
-            firebase.database().ref('last_updated').once('value').then(function(snapshot) {
-                document.querySelector('.updated').innerHTML = `Last Updated: <b> ${snapshot.val()}</b>`;
             });
 
             document.getElementById('due_form').addEventListener('submit', function(e) {
