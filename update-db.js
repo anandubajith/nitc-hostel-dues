@@ -1,6 +1,12 @@
-var pdf_table_extractor = require("pdf-table-extractor");
-var admin = require("firebase-admin");
-var serviceAccount = require("../service-key.json");
+const pdf_table_extractor = require("pdf-table-extractor");
+const admin = require("firebase-admin");
+const serviceAccount = require("../service-key.json");
+
+function Extract(file) {
+    return new Promise(function(resolve, reject) {
+         pdf_table_extractor(file, resolve, reject);
+    });
+}
 
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
@@ -13,7 +19,7 @@ function setLastUpdated(s) {
 	return db.ref('last_updated').set(date);
 }
 
-function success(result) {
+function parsePDF(result) {
 	let promises = [];
 	setLastUpdated(result.pageTables[0].tables[0][0]);
 	// use filter and flatMaps?
@@ -32,30 +38,17 @@ function success(result) {
 	return Promise.all(promises);
 }
 
-function error(e) {
-	console.error(e);
-}
-
 const fileNames = ['PDFs/BTECH_dues.pdf', 'PDFs/PG_dues.pdf', 'PDFs/PHD_dues.pdf'];
 
-function Extract(file) {
-    return new Promise(function(resolve, reject) {
-         pdf_table_extractor(file, resolve, reject);
-    });
-}
 
-filePromises = fileNames.map(
-					file => Extract(file)
-							.then(success)
-							.catch(error)
-				);
+filePromises = fileNames.map(file => Extract(file).then(parsePDF));
 
 Promise
-	.all(
-	   filePromises
-	)
+	.all(filePromises)
 	.then(() => {
 		console.log("Successfully updated");
 		process.exit(0);
 	})
-	.catch(error);
+	.catch((e) => {
+		console.log("Error", e)
+	});
