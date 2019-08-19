@@ -1,12 +1,16 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
     <head>
         <title>Hostel Dues | NIT Calicut</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <meta charset="utf-8">
         <meta name="theme-color" content="#007bff">
+        <meta name="Description" content="A webapp to retrive Hostel Dues of NIT-C students">
         <link rel="icon" href="/favicon.ico">
         <style type="text/css">
+        html {
+            height:100%;
+        }
         html, body, div, form {
             margin: 0;
             padding: 0; 
@@ -21,7 +25,7 @@
         }
 
         body {
-            min-height: 100vh;
+            height: 100%;
             font-family: sans-serif;
             background-size: cover;
             background-image: url('../bg.jpg')
@@ -171,7 +175,7 @@
             })
 
             function updateValue() {
-                let roll_no = document.getElementById('roll_no').value;
+                let roll_no = document.getElementById('roll_no').value.toUpperCase();
                 fetch(dbURL+roll_no+'.json')
                   .then(res => res.json())
                   .then(data => {
