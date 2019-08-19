@@ -1,130 +1,138 @@
 <!DOCTYPE HTML>
 <html lang="en">
-    <head>
-        <title>Hostel Dues | NIT Calicut</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <meta charset="utf-8">
-        <meta name="theme-color" content="#007bff">
-        <meta name="Description" content="A webapp to retrive Hostel Dues of NIT-C students">
-        <link rel="icon" href="/favicon.ico">
-        <style type="text/css">
-        html {
-            height:100%;
-        }
-        html, body, div, form {
-            margin: 0;
-            padding: 0; 
-        }
 
-        h1, h2, h3, h4, h5, h6 { 
-            font-weight:normal;
-        }
+<head>
+  <title>Hostel Dues | NIT Calicut</title>
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#007bff">
+  <meta name="Description" content="A webapp to retrive Hostel Dues of NIT-C students">
+  <link rel="icon" href="/favicon.ico">
+  <style type="text/css">
+    html {
+      height: 100%;
+    }
 
-        img {
-            border: 0;
-        }
+    html,
+    body,
+    div,
+    form {
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            height: 100%;
-            font-family: sans-serif;
-            background-size: cover;
-            background-image: url('../bg.jpg')
-        }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: normal;
+    }
 
-        a {
-            color: #fff;
-        }
+    img {
+      border: 0;
+    }
 
-        nav {
-            background: #007bff;
-            color: white;
-            padding: 1em;
-            display: flex;
-            align-items:center;
-            justify-content: center;
-            margin-bottom: 1em;
-        }
-        nav h1 {
-            margin:0;
-        }
-        nav img {
-            height: 45px;
-            width: 45px;
-            margin-right: 0.5em;
-        }
+    body {
+      height: 100%;
+      font-family: sans-serif;
+      background-size: cover;
+      background-image: url('../bg.jpg')
+    }
 
-        main {
-            box-sizing: border-box;
-            width: 100%;
-            max-width: 400px;
-            margin: auto;
-            padding: 1em;
-        }
-        .notify {
-            color: red;
-            text-align: center;
-            font-weight: bold
-        }
+    a {
+      color: #fff;
+    }
 
-        form {
-            box-sizing: border-box;
-            border-radius: 5px;
-            padding: 1em;
-            color: #fff;
-            background-color: #000;
-            background-color: rgba(0,0,0,0.7);
-        }
-        input {
-            box-sizing: border-box;
-            width:100%;
-            margin-bottom: 0.5em;
-            padding: 1em;
-            border-radius: 5px;
-        }
+    nav {
+      background: #007bff;
+      color: white;
+      padding: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1em;
+    }
 
-        input:focus {
-            outline: 0;
-        }
-        .button {
-            text-transform: uppercase;
-            font-weight: bold;
-            border:0;
-            border-radius: 5px;
-            background-color: #007bff;
-            color:#fff;
-        }
+    nav h1 {
+      margin: 0;
+    }
 
-        .message {
-            margin-top: 1em;
-            padding: 1em;
-            border-radius: 5px;
-            color: #fff;
-            background-color: #000;
-            background-color: rgba(0,0,0,0.7);
-        }
+    nav img {
+      height: 45px;
+      width: 45px;
+      margin-right: 0.5em;
+    }
 
-        </style>
-        <link rel="manifest" href="/manifest.json" />
-    </head>
-    <body>
-        <nav>
-            <img src="./nitc-logo.png" width="45px" height="45px" alt="">                
-            <h1>NIT-C | Hostel Dues Checker</h1>
-        </nav>
+    main {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+      padding: 1em;
+    }
 
-        <main>
-           
-      		<div class="message">
-                <h1>About</h1>
-                <p>NIT-C Hostel dues retriver was originally built with Python by <a href="https://www.linkedin.com/in/sandeepg97/">@sandeep</a>. </p>
-                <p>It is now been rewritten with Firebase and NodeJS and is maintained by <a href="https://anandu.net">@anandubajith</a></p>
-                <h2>Version history</h2>
-                <ul>
-                  <li>V1 - <b>Basic functionality</b> - Python  - <a href="https://github.com/sndp487/hostel-dues">Github</a></li>
-                  <br>
-                  <li>V2 - <b>Added push notifications</b> - NodeJS+Firebase - Github</li>
-                </ul>
-      		</div>
-        </main>
-    </body>
+    a.button {
+      text-decoration: none;
+    }
+
+    .button {
+
+      display: block;
+      text-align: center;
+      box-sizing: border-box;
+      width: 100%;
+      margin-bottom: 0.5em;
+      padding: 1em;
+      border-radius: 5px;
+      text-transform: uppercase;
+      font-weight: bold;
+      border: 0;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    .message {
+      margin-top: 1em;
+      padding: 1em;
+      border-radius: 5px;
+      color: #fff;
+      background-color: #000;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    h1 {
+      margin-top: 0;
+    }
+  </style>
+  <link rel="manifest" href="/manifest.json" />
+</head>
+
+<body>
+  <nav>
+    <img src="./nitc-logo.png" width="45px" height="45px" alt="">
+    <h1>NIT-C | Hostel Dues Checker</h1>
+  </nav>
+
+  <main>
+
+    <div class="message">
+      <h1>About</h1>
+      <p>NIT-C Hostel dues retriver was originally built with Python by <a
+          href="https://www.linkedin.com/in/sandeepg97/">@sandeep</a>. </p>
+      <p>It is now been rewritten with Firebase and NodeJS and is maintained by <a
+          href="https://anandu.net">@anandubajith</a></p>
+      <h2>Version history</h2>
+      <ul>
+        <li>V1 - <b>Basic functionality</b> - Python - <a href="https://github.com/sndp487/hostel-dues">Github</a></li>
+        <br>
+        <li>V2 - <b>Added push notifications</b> - NodeJS+Firebase - Github</li>
+      </ul>
+      <a href="/" class="button">Go back</a>
+    </div>
+  </main>
+</body>
+
 </html>
