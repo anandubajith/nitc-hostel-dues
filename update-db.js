@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 
 const serviceAccount = require("../service-key.json");
 
-function Extract(file) {
+function extract(file) {
   return new Promise(function(resolve, reject) {
     pdf_table_extractor(file, resolve, reject);
   });
@@ -53,7 +53,7 @@ const fileNames = [
   "PDFs/PHD_dues.pdf"
 ];
 
-filePromises = fileNames.map(file => Extract(file).then(parsePDF));
+filePromises = fileNames.map(file => extract(file).then(parsePDF));
 
 Promise.all(filePromises)
   .then(() => {
