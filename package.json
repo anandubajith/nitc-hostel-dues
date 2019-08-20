@@ -1,13 +1,13 @@
 {
   "name": "hostel-dues",
   "version": "1.0.0",
-  "description": "",
-  "main": "send-update-message.js",
+  "description": "NIT-C Hostel dues retriever",
+  "main": "",
   "scripts": {
     "update": "node ./download-files.js && node ./update-db.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Anandu B Ajith",
   "license": "ISC",
   "dependencies": {
     "download": "^7.1.0",

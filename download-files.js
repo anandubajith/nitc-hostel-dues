@@ -1,4 +1,3 @@
-const fs = require("fs");
 const download = require("download");
 const rimraf = require("rimraf");
 

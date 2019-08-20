@@ -1,5 +1,6 @@
 const pdf_table_extractor = require("pdf-table-extractor");
 const admin = require("firebase-admin");
+
 const serviceAccount = require("../service-key.json");
 
 function Extract(file) {
@@ -14,7 +15,7 @@ admin.initializeApp({
 });
 const db = admin.database();
 
-function setLastUpdated(s) {
+function setLastUpdated(f, s) {
   let date = s
     .split(" ")
     .reverse()
@@ -23,12 +24,13 @@ function setLastUpdated(s) {
     .join(" ")
     .replace(")", "")
     .toUpperCase();
+  console.log(f +  " Last Updated: " + date )
   return db.ref("last_updated").set(date);
 }
 
 function parsePDF(result) {
   let promises = [];
-  setLastUpdated(result.pageTables[0].tables[0][0]);
+  setLastUpdated(result.pageTables[0].tables[2][0], result.pageTables[0].tables[0][0]);
   // use filter and flatMaps?
   result.pageTables.map(page => {
     page.tables.map(item => {
