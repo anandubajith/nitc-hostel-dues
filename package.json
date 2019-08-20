@@ -4,12 +4,14 @@
   "description": "NIT-C Hostel dues retriever",
   "main": "",
   "scripts": {
-    "update": "node ./download-files.js && node ./update-db.js"
+    "update": "node ./download-files.js && node ./update-db.js",
+    "deploy": "firebase deploy"
   },
   "keywords": [],
   "author": "Anandu B Ajith",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.0",
     "download": "^7.1.0",
     "firebase-admin": "^8.3.0",
     "pdf-table-extractor": "^1.0.3",

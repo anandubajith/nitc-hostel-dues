@@ -24,13 +24,16 @@ function setLastUpdated(f, s) {
     .join(" ")
     .replace(")", "")
     .toUpperCase();
-  console.log(f +  " Last Updated: " + date )
+  console.log(f + " Last Updated: " + date);
   return db.ref("last_updated").set(date);
 }
 
 function parsePDF(result) {
   let promises = [];
-  setLastUpdated(result.pageTables[0].tables[2][0], result.pageTables[0].tables[0][0]);
+  setLastUpdated(
+    result.pageTables[0].tables[2][0],
+    result.pageTables[0].tables[0][0]
+  );
   // use filter and flatMaps?
   result.pageTables.map(page => {
     page.tables.map(item => {
