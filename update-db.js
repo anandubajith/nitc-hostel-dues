@@ -51,9 +51,9 @@ function parsePDF(result) {
 }
 
 const fileNames = [
-  "PDFs/BTECH_dues.pdf",
-  "PDFs/PG_dues.pdf",
-  "PDFs/PHD_dues.pdf"
+  "PDFs/BTECH.pdf",
+  "PDFs/PG.pdf",
+  "PDFs/PHD.pdf"
 ];
 
 filePromises = fileNames.map(file => extract(file).then(parsePDF));

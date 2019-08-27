@@ -1,7 +1,7 @@
 const download = require("download");
 const rimraf = require("rimraf");
 
-const fileNames = ["BTECH_dues.pdf", "PG_dues.pdf", "PHD_dues.pdf"];
+const fileNames = ["BTECH.pdf", "PG.pdf", "PHD.pdf"];
 
 rimraf("./PDFs/*", function() {
   console.log("Cleaning up.");

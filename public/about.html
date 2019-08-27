@@ -108,12 +108,21 @@
     }
   </style>
   <link rel="manifest" href="/manifest.json" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145913340-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-145913340-1');
+  </script>
 </head>
 
 <body>
   <nav>
     <img src="./nitc-logo.png" width="45px" height="45px" alt="">
-    <h1>NIT-C | Hostel Dues Checker</h1>
+    <h1>About | NIT-C Hostel Dues Checker</h1>
   </nav>
 
   <main>
@@ -128,7 +137,7 @@
       <ul>
         <li>V1 - <b>Basic functionality</b> - Python - <a href="https://github.com/sndp487/hostel-dues">Github</a></li>
         <br>
-        <li>V2 - <b>Added push notifications</b> - NodeJS+Firebase - Github</li>
+        <li>V2 - <b>Added push notifications</b> - NodeJS+Firebase - <a href="https://github.com/anandubajith/nitc-hostel-dues">Github</a></li>
       </ul>
       <a href="/" class="button">Go back</a>
     </div>
