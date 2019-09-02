@@ -41,7 +41,8 @@ function parsePDF(result) {
         promises.push(
           db.ref(item[0]).set({
             name: item[1],
-            due: item[2]
+            due: item[2],
+            note: item[3]
           })
         );
       }
