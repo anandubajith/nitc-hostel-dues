@@ -23,6 +23,7 @@ function setLastUpdated(f, s) {
     .reverse()
     .join(" ")
     .replace(")", "")
+    .replate("\n", "")
     .toUpperCase();
   console.log(f + " Last Updated: " + date);
   return db.ref("last_updated").set(date);

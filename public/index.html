@@ -192,7 +192,9 @@
                             result.innerHTML = '<b class="notify">Invalid Roll No</b>';
                             return;
                     }
-                    result.innerHTML = `Name: <b>${data.name}</b><br>Due: <b> ₹${data.due}/-</b>`;
+                    result.innerHTML = `Name: <b>${data.name}</b><br>Due: <b> ₹${data.due}${data.note}/-</b>`;
+                    if ( data.note === "*")
+                        result.innerHTML += `<br>Note: <b>Awaiting funds from Kerala State SC, ST & OEC Departments</b>`
                     document.querySelector('.help-text').style.display = 'none';
                   });
                 
