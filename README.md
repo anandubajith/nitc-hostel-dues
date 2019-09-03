@@ -1,5 +1,5 @@
 # NIT-C HOSTEL DUES
-
+![Screenshot August](public/screenshot.png)
 ## Setup
 1. Generate `service-key.json`
     1. In the Firebase console, open Settings > Service Accounts.
