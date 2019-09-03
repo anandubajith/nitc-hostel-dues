@@ -1,4 +1,4 @@
-# HOSTEL DUES
+# NIT-C HOSTEL DUES
 
 ## Setup
 1. Generate `service-key.json`
@@ -10,7 +10,7 @@
                 
             onesignal_app_id=<APP_ID>
             onesignal_api_key=<API_KEY>
-    2. Replace the values with OneSignal -> Settings -> Key & IDs
+    2. Replace the values with OneSignal > Settings > Key & IDs
 
 3. Run `npm run update` to download the files and update dues in Firebase Database
 4. Run `npm run notify` to send push notification using OneSignal
