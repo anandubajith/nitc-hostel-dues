@@ -10,6 +10,7 @@
                 
             onesignal_app_id=<APP_ID>
             onesignal_api_key=<API_KEY>
+            
     2. Replace the values with OneSignal > Settings > Key & IDs
 
 3. Run `npm run update` to download the files and update dues in Firebase Database
