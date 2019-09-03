@@ -7,7 +7,7 @@
     "notify": "node ./notify-users.js",
     "deploy": "firebase deploy"
   },
-  "keywords": [],
+  "keywords": ["nitc", "hostel-dues", "pdf-parsing", "firebase db"],
   "author": {
     "name": "Anandu B Ajith",
     "email": "reach2anandu@gmail.com",
@@ -22,11 +22,9 @@
     "pdf-table-extractor": "^1.0.3",
     "rimraf": "^3.0.0"
   },
-  "repositories": [
-    {
-      "type": "git",
-      "url": "git@github.com:anandubajith/nitc-hostel-dues.git"
-    }
-  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:anandubajith/nitc-hostel-dues.git"
+  },
   "homepage": "https://nitc-hostel-dues.web.app/"
 }
