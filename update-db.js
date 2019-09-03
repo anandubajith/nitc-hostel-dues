@@ -1,7 +1,7 @@
 const pdf_table_extractor = require("pdf-table-extractor");
 const admin = require("firebase-admin");
 
-const serviceAccount = require("../service-key.json");
+const serviceAccount = require("./service-key.json");
 
 function extract(file) {
   return new Promise(function(resolve, reject) {

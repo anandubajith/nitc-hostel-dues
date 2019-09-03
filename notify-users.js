@@ -1,19 +1,18 @@
 const axios = require("axios");
-
-const onesignal_keys = require("../onesignal.json");
+require('dotenv').config();
 
 function sendUpdateNotification(date) {
   return axios.post(
     "https://onesignal.com/api/v1/notifications",
     {
-      app_id: onesignal_keys.onesignal_app_id,
+      app_id: process.env.onesignal_app_id,
       contents: { en: `Dues updated - ${date}` },
       included_segments: ["All"]
     },
     {
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        Authorization: `Basic ${onesignal_keys.onesignal_api_key}`
+        'Authorization': `Basic ${process.env.onesignal_api_key}`
       }
     }
   );
