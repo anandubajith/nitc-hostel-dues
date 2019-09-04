@@ -2,7 +2,7 @@
 ![Screenshot August](public/screenshot.png)
 
 ## Setup
-1. Install NodeJS and npm
+1. Install NodeJS and NPM
         
         sudo apt install nodejs npm
 2. Clone the repository and cd into it
