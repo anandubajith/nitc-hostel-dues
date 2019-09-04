@@ -23,7 +23,9 @@
             onesignal_api_key=<API_KEY>
             
     2. Replace the values with OneSignal > Settings > Key & IDs
+    
+6. Run `npm run deploy` to deploy the app to Firebase
 
-6. Run `npm run update` to download the files and update dues in Firebase Database
+7. Run `npm run update` to download the files and update dues in Firebase Database
 
-7. Run `npm run notify` to send push notification using OneSignal
+8. Run `npm run notify` to send push notification using OneSignal
