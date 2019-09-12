@@ -1,23 +1,44 @@
 <!DOCTYPE HTML>
 <html lang="en">
-    <head>
-        <title>Hostel Dues | NIT Calicut</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <meta charset="utf-8">
-        <meta name="theme-color" content="#007bff">
-        <meta name="Description" content="A webapp to retrive Hostel Dues of NIT-C students">
-        <link rel="icon" href="/favicon.ico">
-        <style type="text/css">
+
+<head>
+    <title>Hostel Dues | NIT Calicut</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0,, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta name="Description" content="A webapp to retrive Hostel Dues of NIT-C students">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="HostelDues">
+    <meta name="apple-mobile-web-app-title" content="HostelDues">
+    <meta name="theme-color" content="#007bff">
+    <meta name="msapplication-navbutton-color" content="#007bff">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-starturl" content="/">
+    <link rel="icon" type="image/png" sizes="512x512" href="nitc-512.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="nitc-512.png">
+    <link rel="icon" href="/favicon.ico">
+    <style type="text/css">
         html {
-            height:100%;
-        }
-        html, body, div, form {
-            margin: 0;
-            padding: 0; 
+            height: 100%;
         }
 
-        h1, h2, h3, h4, h5, h6 { 
-            font-weight:normal;
+        html,
+        body,
+        div,
+        form {
+            margin: 0;
+            padding: 0;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: normal;
         }
 
         img {
@@ -40,13 +61,15 @@
             color: white;
             padding: 1em;
             display: flex;
-            align-items:center;
+            align-items: center;
             justify-content: center;
             margin-bottom: 1em;
         }
+
         nav h1 {
-            margin:0;
+            margin: 0;
         }
+
         nav img {
             height: 45px;
             width: 45px;
@@ -60,6 +83,7 @@
             margin: auto;
             padding: 1em;
         }
+
         .notify {
             color: red;
             text-align: center;
@@ -72,11 +96,12 @@
             padding: 1em;
             color: #fff;
             background-color: #000;
-            background-color: rgba(0,0,0,0.7);
+            background-color: rgba(0, 0, 0, 0.7);
         }
+
         input {
             box-sizing: border-box;
-            width:100%;
+            width: 100%;
             margin-bottom: 0.5em;
             padding: 1em;
             border-radius: 5px;
@@ -85,13 +110,14 @@
         input:focus {
             outline: 0;
         }
+
         .button {
             text-transform: uppercase;
             font-weight: bold;
-            border:0;
+            border: 0;
             border-radius: 5px;
             background-color: #007bff;
-            color:#fff;
+            color: #fff;
         }
 
         .message {
@@ -100,178 +126,179 @@
             border-radius: 5px;
             color: #fff;
             background-color: #000;
-            background-color: rgba(0,0,0,0.7);
+            background-color: rgba(0, 0, 0, 0.7);
         }
-
-        </style>
-        <link rel="manifest" href="/manifest.json" />
-        <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-        <script>
-          var OneSignal = window.OneSignal || [];
-          OneSignal.push(function() {
+    </style>
+    <link rel="manifest" href="/manifest.json" />
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <script>
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(function () {
             OneSignal.init({
-              appId: "31eee611-f787-450c-8eaf-4c0b249c8e2f",
-              notifyButton: {
-                enable: false,
-              },
+                appId: "31eee611-f787-450c-8eaf-4c0b249c8e2f",
+                notifyButton: {
+                    enable: false,
+                },
             });
-          });
-        </script>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145913340-1"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
+        });
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145913340-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-          gtag('config', 'UA-145913340-1');
-        </script>
-    </head>
-    <body>
-        <nav>
-            <img src="./nitc-logo.png" width="45px" height="45px" alt="">                
-            <h1>NIT-C | Hostel Dues Checker</h1>
-        </nav>
+        gtag('config', 'UA-145913340-1');
+    </script>
+</head>
 
-        <main>
-            <form id="due_form" >
-                 <input type="text" placeholder="Roll number (Eg. B180288CS)" 
-                        name="roll_no" id="roll_no" required="true" autocomplete="off" >
-                 <input class="button" type="submit" id="check" value="Check">
-            </form>
-            <div class="message">
-            
-                <div class="help-text"><i>Enter your Roll no. to check hostel dues.</i></div>
-                <div class="updated"></div>
-                <div class="result">
-                  
-                </div>
+<body>
+    <nav>
+        <img src="./nitc-logo.png" width="45px" height="45px" alt="">
+        <h1>NIT-C | Hostel Dues Checker</h1>
+    </nav>
+
+    <main>
+        <form id="due_form">
+            <input type="text" placeholder="Roll number (Eg. B180288CS)" name="roll_no" id="roll_no" required="true"
+                autocomplete="off">
+            <input class="button" type="submit" id="check" value="Check">
+        </form>
+        <div class="message">
+
+            <div class="help-text"><i>Enter your Roll no. to check hostel dues.</i></div>
+            <div class="updated"></div>
+            <div class="result">
+
             </div>
-      		<div class="message">
-                <a href="/about.html">about</a>
-                &middot;
-                <a href="#" id="subscribe" style="display:none">Subscribe to Notifications</a>
-      		</div>
-        </main>
+        </div>
+        <div class="message">
+            <a href="/about.html">about</a>
+            &middot;
+            <a href="#" id="subscribe" style="display:none">Subscribe to Notifications</a>
+        </div>
+    </main>
 
-        <script>
-            const dbURL = "https://nitc-hostel-dues.firebaseio.com/";
-            const result = document.querySelector('.result');  
+    <script>
+        const dbURL = "https://nitc-hostel-dues.firebaseio.com/";
+        const result = document.querySelector('.result');
 
-            fetch(dbURL+'last_updated.json')
+        fetch(dbURL + 'last_updated.json')
+            .then(res => res.json())
+            .then(date => {
+                document.querySelector('.updated').innerHTML = 'Last Updated: <b>' + date + '</b>';
+            });
+
+        if (localStorage.roll_no !== undefined && localStorage.roll_no != '') {
+            document.getElementById('roll_no').value = localStorage.roll_no;
+            updateValue();
+        }
+        document.getElementById('roll_no').addEventListener('change', function () {
+            localStorage.roll_no = document.getElementById('roll_no').value;
+        });
+
+        document.getElementById('due_form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            result.innerText = 'Loading';
+            updateValue();
+        });
+        document.getElementById('check').addEventListener('click', function (e) {
+            e.preventDefault();
+            result.innerText = 'Loading';
+            updateValue();
+        })
+
+        function updateValue() {
+            let roll_no = document.getElementById('roll_no').value.toUpperCase();
+            fetch(dbURL + roll_no + '.json')
                 .then(res => res.json())
-                .then(date => {
-                    document.querySelector('.updated').innerHTML = 'Last Updated: <b>' + date + '</b>';
-                });
-
-            if ( localStorage.roll_no !== undefined && localStorage.roll_no != '' ) {
-                document.getElementById('roll_no').value = localStorage.roll_no;
-                updateValue();
-            } 
-            document.getElementById('roll_no').addEventListener('change',function() {
-                localStorage.roll_no = document.getElementById('roll_no').value;
-            });
-
-            document.getElementById('due_form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                result.innerText = 'Loading';
-                updateValue();
-            });
-            document.getElementById('check').addEventListener('click', function(e) {
-                e.preventDefault();
-                result.innerText = 'Loading';
-                updateValue(); 
-            })
-
-            function updateValue() {
-                let roll_no = document.getElementById('roll_no').value.toUpperCase();
-                fetch(dbURL+roll_no+'.json')
-                  .then(res => res.json())
-                  .then(data => {
-                    if ( data == null) {
-                            result.innerHTML = '<b class="notify">Invalid Roll No</b>';
-                            return;
-                    }
-                    result.innerHTML = `Name: <b>${data.name}</b><br>Due: <b> ₹${data.due}${data.note}/-</b>`;
-                    if ( data.note === "*")
-                        result.innerHTML += `<br>Note: <b>Awaiting funds from Kerala State SC, ST & OEC Departments</b>`
-                    document.querySelector('.help-text').style.display = 'none';
-                  });
-                
-            }
-            function onManageWebPushSubscriptionButtonClicked(event) {
-                getSubscriptionState().then(function(state) {
-                    if (state.isPushEnabled) {
-                        /* Subscribed, opt them out */
-                        OneSignal.setSubscription(false);
-                    } else {
-                        if (state.isOptedOut) {
-                            /* Opted out, opt them back in */
-                            OneSignal.setSubscription(true);
-                        } else {
-                            /* Unsubscribed, subscribe them */
-                            OneSignal.registerForPushNotifications();
-                        }
-                    }
-                });
-                event.preventDefault();
-            }
-
-            function updateMangeWebPushSubscriptionButton(buttonSelector) {
-                var hideWhenSubscribed = false;
-                var subscribeText = "Subscribe to Notifications";
-                var unsubscribeText = "Unsubscribe from Notifications";
-
-                getSubscriptionState().then(function(state) {
-                    var buttonText = !state.isPushEnabled || state.isOptedOut ? subscribeText : unsubscribeText;
-
-                    var element = document.querySelector(buttonSelector);
-                    if (element === null) {
+                .then(data => {
+                    if (data == null) {
+                        result.innerHTML = '<b class="notify">Invalid Roll No</b>';
                         return;
                     }
+                    result.innerHTML = `Name: <b>${data.name}</b><br>Due: <b> ₹${data.due}${data.note}/-</b>`;
+                    if (data.note === "*")
+                        result.innerHTML += `<br>Note: <b>Awaiting funds from Kerala State SC, ST & OEC Departments</b>`
+                    document.querySelector('.help-text').style.display = 'none';
+                });
 
-                    element.removeEventListener('click', onManageWebPushSubscriptionButtonClicked);
-                    element.addEventListener('click', onManageWebPushSubscriptionButtonClicked);
-                    element.textContent = buttonText;
-
-                    if (state.hideWhenSubscribed && state.isPushEnabled) {
-                        element.style.display = "none";
+        }
+        function onManageWebPushSubscriptionButtonClicked(event) {
+            getSubscriptionState().then(function (state) {
+                if (state.isPushEnabled) {
+                    /* Subscribed, opt them out */
+                    OneSignal.setSubscription(false);
+                } else {
+                    if (state.isOptedOut) {
+                        /* Opted out, opt them back in */
+                        OneSignal.setSubscription(true);
                     } else {
-                        element.style.display = "";
+                        /* Unsubscribed, subscribe them */
+                        OneSignal.registerForPushNotifications();
                     }
-                });
-            }
+                }
+            });
+            event.preventDefault();
+        }
 
-            function getSubscriptionState() {
-                return Promise.all([
-                  OneSignal.isPushNotificationsEnabled(),
-                  OneSignal.isOptedOut()
-                ]).then(function(result) {
-                    var isPushEnabled = result[0];
-                    var isOptedOut = result[1];
+        function updateMangeWebPushSubscriptionButton(buttonSelector) {
+            var hideWhenSubscribed = false;
+            var subscribeText = "Subscribe to Notifications";
+            var unsubscribeText = "Unsubscribe from Notifications";
 
-                    return {
-                        isPushEnabled: isPushEnabled,
-                        isOptedOut: isOptedOut
-                    };
-                });
-            }
+            getSubscriptionState().then(function (state) {
+                var buttonText = !state.isPushEnabled || state.isOptedOut ? subscribeText : unsubscribeText;
 
-            var OneSignal = OneSignal || [];
-            var buttonSelector = "#subscribe";
-
-            /* This example assumes you've already initialized OneSignal */
-            OneSignal.push(function() {
-                // If we're on an unsupported browser, do nothing
-                if (!OneSignal.isPushNotificationsSupported()) {
+                var element = document.querySelector(buttonSelector);
+                if (element === null) {
                     return;
                 }
-                updateMangeWebPushSubscriptionButton(buttonSelector);
-                OneSignal.on("subscriptionChange", function(isSubscribed) {
-                    /* If the user's subscription state changes during the page's session, update the button text */
-                    updateMangeWebPushSubscriptionButton(buttonSelector);
-                });
+
+                element.removeEventListener('click', onManageWebPushSubscriptionButtonClicked);
+                element.addEventListener('click', onManageWebPushSubscriptionButtonClicked);
+                element.textContent = buttonText;
+
+                if (state.hideWhenSubscribed && state.isPushEnabled) {
+                    element.style.display = "none";
+                } else {
+                    element.style.display = "";
+                }
             });
-        </script>
-    </body>
+        }
+
+        function getSubscriptionState() {
+            return Promise.all([
+                OneSignal.isPushNotificationsEnabled(),
+                OneSignal.isOptedOut()
+            ]).then(function (result) {
+                var isPushEnabled = result[0];
+                var isOptedOut = result[1];
+
+                return {
+                    isPushEnabled: isPushEnabled,
+                    isOptedOut: isOptedOut
+                };
+            });
+        }
+
+        var OneSignal = OneSignal || [];
+        var buttonSelector = "#subscribe";
+
+        /* This example assumes you've already initialized OneSignal */
+        OneSignal.push(function () {
+            // If we're on an unsupported browser, do nothing
+            if (!OneSignal.isPushNotificationsSupported()) {
+                return;
+            }
+            updateMangeWebPushSubscriptionButton(buttonSelector);
+            OneSignal.on("subscriptionChange", function (isSubscribed) {
+                /* If the user's subscription state changes during the page's session, update the button text */
+                updateMangeWebPushSubscriptionButton(buttonSelector);
+            });
+        });
+    </script>
+</body>
+
 </html>

@@ -1,10 +1,18 @@
 {
   "name": "NIT-C Hostel Dues",
-  "short_name": "hostel-dues",
-  "theme_color": "#007bff",
-  "background_color": "#007bff",
-  "display": "browser",
+  "short_name": "HostelDues",
+  "description": "A webapp to retrive Hostel Dues of NIT-C students",
+  "lang": "en-US",
+  "start_url": "/",
+  "display": "standalone",
   "orientation": "portrait",
-  "scope": "/",
-  "start_url": "/"
+  "theme_color": "#007bff",
+  "background_color": "#fff",
+  "icons": [
+    {
+      "src": "nitc-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
