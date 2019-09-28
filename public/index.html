@@ -3,8 +3,7 @@
 
 <head>
     <title>Hostel Dues | NIT Calicut</title>
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0,, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0,, shrink-to-fit=no">
     <meta charset="utf-8">
     <meta name="Description" content="A webapp to retrive Hostel Dues of NIT-C students">
 
@@ -23,7 +22,7 @@
         html {
             height: 100%;
         }
-
+        
         html,
         body,
         div,
@@ -31,7 +30,7 @@
             margin: 0;
             padding: 0;
         }
-
+        
         h1,
         h2,
         h3,
@@ -40,22 +39,22 @@
         h6 {
             font-weight: normal;
         }
-
+        
         img {
             border: 0;
         }
-
+        
         body {
             height: 100%;
             font-family: sans-serif;
             background-size: cover;
             background-image: url('../bg.jpg')
         }
-
+        
         a {
             color: #fff;
         }
-
+        
         nav {
             background: #007bff;
             color: white;
@@ -65,17 +64,17 @@
             justify-content: center;
             margin-bottom: 1em;
         }
-
+        
         nav h1 {
             margin: 0;
         }
-
+        
         nav img {
             height: 45px;
             width: 45px;
             margin-right: 0.5em;
         }
-
+        
         main {
             box-sizing: border-box;
             width: 100%;
@@ -83,13 +82,13 @@
             margin: auto;
             padding: 1em;
         }
-
+        
         .notify {
             color: red;
             text-align: center;
             font-weight: bold
         }
-
+        
         form {
             box-sizing: border-box;
             border-radius: 5px;
@@ -98,7 +97,7 @@
             background-color: #000;
             background-color: rgba(0, 0, 0, 0.7);
         }
-
+        
         input {
             box-sizing: border-box;
             width: 100%;
@@ -106,11 +105,11 @@
             padding: 1em;
             border-radius: 5px;
         }
-
+        
         input:focus {
             outline: 0;
         }
-
+        
         .button {
             text-transform: uppercase;
             font-weight: bold;
@@ -119,7 +118,7 @@
             background-color: #007bff;
             color: #fff;
         }
-
+        
         .message {
             margin-top: 1em;
             padding: 1em;
@@ -133,7 +132,7 @@
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
     <script>
         var OneSignal = window.OneSignal || [];
-        OneSignal.push(function () {
+        OneSignal.push(function() {
             OneSignal.init({
                 appId: "31eee611-f787-450c-8eaf-4c0b249c8e2f",
                 notifyButton: {
@@ -146,7 +145,10 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145913340-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
 
         gtag('config', 'UA-145913340-1');
@@ -155,14 +157,13 @@
 
 <body>
     <nav>
-        <img src="./nitc-logo.png" width="45px" height="45px" alt="">
+        <img src="./nitc-logo.png" width="45px" height="45px" alt="NIT-C Logo">
         <h1>NIT-C | Hostel Dues Checker</h1>
     </nav>
 
     <main>
         <form id="due_form">
-            <input type="text" placeholder="Roll number (Eg. B180288CS)" name="roll_no" id="roll_no" required="true"
-                autocomplete="off">
+            <input type="text" placeholder="Roll number (Eg. B180288CS)" name="roll_no" id="roll_no" required="true" autocomplete="off">
             <input class="button" type="submit" id="check" value="Check">
         </form>
         <div class="message">
@@ -174,8 +175,7 @@
             </div>
         </div>
         <div class="message">
-            <a href="/about.html">about</a>
-            &middot;
+            <a href="/about.html">about</a> &middot;
             <a href="#" id="subscribe" style="display:none">Subscribe to Notifications</a>
         </div>
     </main>
@@ -194,23 +194,24 @@
             document.getElementById('roll_no').value = localStorage.roll_no;
             updateValue();
         }
-        document.getElementById('roll_no').addEventListener('change', function () {
+        document.getElementById('roll_no').addEventListener('change', function() {
             localStorage.roll_no = document.getElementById('roll_no').value;
         });
 
-        document.getElementById('due_form').addEventListener('submit', function (e) {
+        document.getElementById('due_form').addEventListener('submit', function(e) {
             e.preventDefault();
             result.innerText = 'Loading';
             updateValue();
         });
-        document.getElementById('check').addEventListener('click', function (e) {
+        document.getElementById('check').addEventListener('click', function(e) {
             e.preventDefault();
             result.innerText = 'Loading';
             updateValue();
         })
-        navigator.serviceWorker && navigator.serviceWorker.register('/OneSignalSDKWorker.js').then(function (registration) {
+        navigator.serviceWorker && navigator.serviceWorker.register('/OneSignalSDKWorker.js').then(function(registration) {
             console.log('Excellent, registered with scope: ', registration.scope);
         });
+
         function updateValue() {
             let roll_no = document.getElementById('roll_no').value.toUpperCase();
             fetch(dbURL + roll_no + '.json')
@@ -227,8 +228,9 @@
                 });
 
         }
+
         function onManageWebPushSubscriptionButtonClicked(event) {
-            getSubscriptionState().then(function (state) {
+            getSubscriptionState().then(function(state) {
                 if (state.isPushEnabled) {
                     /* Subscribed, opt them out */
                     OneSignal.setSubscription(false);
@@ -250,7 +252,7 @@
             var subscribeText = "Subscribe to Notifications";
             var unsubscribeText = "Unsubscribe from Notifications";
 
-            getSubscriptionState().then(function (state) {
+            getSubscriptionState().then(function(state) {
                 var buttonText = !state.isPushEnabled || state.isOptedOut ? subscribeText : unsubscribeText;
 
                 var element = document.querySelector(buttonSelector);
@@ -274,7 +276,7 @@
             return Promise.all([
                 OneSignal.isPushNotificationsEnabled(),
                 OneSignal.isOptedOut()
-            ]).then(function (result) {
+            ]).then(function(result) {
                 var isPushEnabled = result[0];
                 var isOptedOut = result[1];
 
@@ -289,13 +291,13 @@
         var buttonSelector = "#subscribe";
 
         /* This example assumes you've already initialized OneSignal */
-        OneSignal.push(function () {
+        OneSignal.push(function() {
             // If we're on an unsupported browser, do nothing
             if (!OneSignal.isPushNotificationsSupported()) {
                 return;
             }
             updateMangeWebPushSubscriptionButton(buttonSelector);
-            OneSignal.on("subscriptionChange", function (isSubscribed) {
+            OneSignal.on("subscriptionChange", function(isSubscribed) {
                 /* If the user's subscription state changes during the page's session, update the button text */
                 updateMangeWebPushSubscriptionButton(buttonSelector);
             });
