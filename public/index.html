@@ -250,8 +250,8 @@
 
         function updateMangeWebPushSubscriptionButton(buttonSelector) {
             var hideWhenSubscribed = false;
-            var subscribeText = "Subscribe to Notifications";
-            var unsubscribeText = "Unsubscribe from Notifications";
+            var subscribeText = "subscribe to notifications";
+            var unsubscribeText = "unsubscribe from notifications";
 
             getSubscriptionState().then(function(state) {
                 var buttonText = !state.isPushEnabled || state.isOptedOut ? subscribeText : unsubscribeText;
