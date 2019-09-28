@@ -208,9 +208,9 @@
             result.innerText = 'Loading';
             updateValue();
         })
-	navigator.serviceWorker && navigator.serviceWorker.register('/OneSignalSDKWorker.js').then(function(registration) {
-		  console.log('Excellent, registered with scope: ', registration.scope);
-	});
+        navigator.serviceWorker && navigator.serviceWorker.register('/OneSignalSDKWorker.js').then(function (registration) {
+            console.log('Excellent, registered with scope: ', registration.scope);
+        });
         function updateValue() {
             let roll_no = document.getElementById('roll_no').value.toUpperCase();
             fetch(dbURL + roll_no + '.json')
