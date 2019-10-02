@@ -6,7 +6,7 @@ function sendUpdateNotification(date) {
     "https://onesignal.com/api/v1/notifications",
     {
       app_id: process.env.onesignal_app_id,
-      contents: { en: `Dues updated - ${date}` },
+      contents: { en: `Dues updated - ${date}\nTap to view` },
       included_segments: ["All"]
     },
     {
