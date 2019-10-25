@@ -6,7 +6,7 @@
     "start_url": "/?utm_source=pwa",
     "display": "standalone",
     "orientation": "portrait",
-    "theme_color": "#007bff",
+    "theme_color": "#006400",
     "background_color": "#fff",
     "icons": [{
         "src": "nitc-512.png",
