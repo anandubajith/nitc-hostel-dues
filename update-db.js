@@ -40,12 +40,20 @@ function parsePDF(result) {
     page.tables.map(item => {
       // Find a permanent solution 
       // They keep changing indexes
-      if (item[1].length === 9) {
+      if (item[0].length === 9) {
+        promises.push(
+          db.ref(item[0]).set({
+            name: item[1],
+            due: item[2],
+            note: item[3]
+          })
+        );
+      } else if (item[1].length === 9) {
         promises.push(
           db.ref(item[1]).set({
-            name: item[1+1],
-            due: item[2+1],
-            note: item[3+1]
+            name: item[2],
+            due: item[3],
+            note: item[4]
           })
         );
       }
