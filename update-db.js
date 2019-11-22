@@ -38,12 +38,14 @@ function parsePDF(result) {
   // use filter and flatMaps?
   result.pageTables.map(page => {
     page.tables.map(item => {
-      if (item[0].length === 9) {
+      // Find a permanent solution 
+      // They keep changing indexes
+      if (item[1].length === 9) {
         promises.push(
-          db.ref(item[0]).set({
-            name: item[1],
-            due: item[2],
-            note: item[3]
+          db.ref(item[1]).set({
+            name: item[1+1],
+            due: item[2+1],
+            note: item[3+1]
           })
         );
       }

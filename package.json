@@ -21,9 +21,9 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.0",
-    "dotenv": "^8.1.0",
+    "dotenv": "^8.2.0",
     "download": "^7.1.0",
-    "firebase-admin": "^8.4.0",
+    "firebase-admin": "^8.8.0",
     "pdf-table-extractor": "^1.0.3",
     "rimraf": "^3.0.0"
   },
