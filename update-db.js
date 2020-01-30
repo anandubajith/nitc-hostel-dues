@@ -16,17 +16,19 @@ admin.initializeApp({
 const db = admin.database();
 
 function setLastUpdated(f, s) {
-  let date = s
-    .split(" ")
-    .reverse()
-    .slice(0, 3)
-    .reverse()
-    .join(" ")
-    .replace(")", "")
-    .replace("\n", "")
-    .toUpperCase();
+  // let date = s
+  //   .split(" ")
+  //   .reverse()
+  //   .slice(0, 3)
+  //   .reverse()
+  //   .join(" ")
+  //   .replace(")", "")
+  //   .replace("\n", "")
+  //   .toUpperCase();
+  let pattern = /\d{2}\S{2}\s?\w{3,9}\s?\d{4}/;
+  let date =  pattern.exec(s);
   console.log(f + " Last Updated: " + date);
-  return db.ref("last_updated").set(date);
+  return db.ref("last_updated").set(date.toString());
 }
 
 function parsePDF(result) {
