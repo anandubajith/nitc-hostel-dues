@@ -9,7 +9,7 @@ function getLastUpdated() {
 }
 
 async function updateDatabase() {
-    await exec('node update-db.js');
+    await exec('npm run update');
 };
 async function sendNotification() {
     await exec('node notify-users.js');
