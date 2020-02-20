@@ -15,11 +15,14 @@ admin.initializeApp({
 });
 const db = admin.database();
 
-function setLastUpdated(f, s) {
-  let pattern = /\d{2}\S{2}\s?\w{3,9}\s?\d{4}/;
-  let date =  pattern.exec(s);
-  console.log(f + " Last Updated: " + date);
-  return db.ref("last_updated").set(date.toString());
+async function setLastUpdated(f, s) {
+  let paymentDatePattern = /\d{2}\S{2}\s?\w{3,9}\s?\d{4}/;
+  let datePattern = /\w{3,9}\s?\d{4}/;
+  let paymentUpdationDate =  paymentDatePattern.exec(s);
+  let updationDate = datePattern.exec(s)[0];
+  console.log(`${f} - Month: ${updationDate} Payment Update: ${paymentUpdationDate}`);
+  await db.ref("payment_updated").set(paymentUpdationDate.toString()),
+  await db.ref("updated").set(updationDate.toString())
 }
 
 function parsePDF(result) {
@@ -28,6 +31,7 @@ function parsePDF(result) {
     result.pageTables[0].tables[2][0],
     result.pageTables[0].tables[0][0]
   );
+
   // use filter and flatMaps?
   result.pageTables.map(page => {
     page.tables.map(item => {
