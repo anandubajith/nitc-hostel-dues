@@ -185,7 +185,7 @@
     <script>
         const dbURL = "https://nitc-hostel-dues.firebaseio.com/";
         const result = document.querySelector('.result');
-
+        const sbiCollectURL = "https://www.onlinesbi.com/sbicollect/icollecthome.htm?corpID=366005";
         fetch(dbURL + 'updated.json')
             .then(res => res.json())
             .then(date => {
@@ -228,7 +228,10 @@
                         result.innerHTML = '<b class="notify">Invalid Roll No</b>';
                         return;
                     }
-                    result.innerHTML = `Name: <b>${data.name}</b><br>Due: <b> ₹${data.due}${data.note}/-</b>`;
+                    result.innerHTML = `Name: <b>${data.name}</b>
+                                        <br>Due:
+                                        <b><a href="${sbiCollectURL}" target="_blank">₹${data.due}</a>${data.note}/-</b>`;
+                                        
                     if (data.note === "*")
                         result.innerHTML += `<br>Note: <b>Awaiting funds from Kerala State SC, ST & OEC Departments</b>`
                     document.querySelector('.help-text').style.display = 'none';
