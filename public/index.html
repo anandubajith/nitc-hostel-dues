@@ -77,7 +77,7 @@
         main {
             box-sizing: border-box;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             margin: auto;
             padding: 1em;
         }
@@ -171,9 +171,9 @@
 
             <div class="help-text"><i>Enter your Roll no. to check hostel dues.</i></div>
             <div class="updated"></div>
-            <div class="result">
-
-            </div>
+            <div class="payment_updated"></div>
+            <br>
+            <div class="result"></div>
         </div>
         <div class="message">
             <a href="/about.html">about</a> &middot;
@@ -185,10 +185,15 @@
         const dbURL = "https://nitc-hostel-dues.firebaseio.com/";
         const result = document.querySelector('.result');
 
-        fetch(dbURL + 'last_updated.json')
+        fetch(dbURL + 'updated.json')
             .then(res => res.json())
             .then(date => {
-                document.querySelector('.updated').innerHTML = 'Last Updated: <b>' + date + '</b>';
+                document.querySelector('.updated').innerHTML = 'Up to and including the month of <b>' + date + '</b>';
+            });
+        fetch(dbURL + 'payment_updated.json')
+            .then(res => res.json())
+            .then(date => {
+                document.querySelector('.payment_updated').innerHTML = 'Payment Updated till <b>' + date + '</b>';
             });
 
         if (localStorage.roll_no !== undefined && localStorage.roll_no != '') {
