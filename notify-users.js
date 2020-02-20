@@ -20,7 +20,7 @@ function sendUpdateNotification(date) {
 
 function getLastUpdated() {
   return axios
-    .get("https://nitc-hostel-dues.firebaseio.com/last_updated.json")
+    .get("https://nitc-hostel-dues.firebaseio.com/updated.json")
     .then(response => response.data);
 }
 
