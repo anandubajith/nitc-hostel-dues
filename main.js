@@ -4,7 +4,7 @@ const exec = util.promisify(require('child_process').exec);
 
 function getLastUpdated() {
     return axios
-      .get("https://nitc-hostel-dues.firebaseio.com/last_updated.json")
+      .get("https://nitc-hostel-dues.firebaseio.com/payment_updated.json")
       .then(response => response.data);
 }
 
@@ -18,7 +18,7 @@ async function sendNotification() {
 
 async function update() {
     var oldDate = await getLastUpdated();
-    updateDatabase();
+    await updateDatabase();
     var newDate = await getLastUpdated();
     if ( oldDate != newDate ) {
         sendNotification();
