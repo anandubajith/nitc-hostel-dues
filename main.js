@@ -12,7 +12,7 @@ async function updateDatabase() {
     await exec('npm run update');
 };
 async function sendNotification() {
-    await exec('node notify-users.js');
+    await exec('npm run notify');
 };
 
 
@@ -21,7 +21,7 @@ async function update() {
     await updateDatabase();
     var newDate = await getLastUpdated();
     if ( oldDate != newDate ) {
-        sendNotification();
+        await sendNotification();
         console.log("Notification sent with ", newDate)
     } else {
         console.log("No new data : ", newDate);
