@@ -21,7 +21,6 @@ async function setLastUpdated(f, s) {
   let paymentUpdationDate =  paymentDatePattern.exec(s);
   let updationDate = datePattern.exec(s)[0];
   console.log(`${f} - Month: ${updationDate} Payment Update: ${paymentUpdationDate}`);
-  console.log(f,s,paymentUpdationDate, updationDate);
   await db.ref("payment_updated").set(paymentUpdationDate.toString()),
   await db.ref("updated").set(updationDate.toString());
 }
