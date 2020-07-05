@@ -16,13 +16,18 @@ admin.initializeApp({
 const db = admin.database();
 
 async function setLastUpdated(f, s) {
-  let paymentDatePattern = /\d{2}\S{2}\s+?\w{3,9}\s+?\d{4}/;
-  let datePattern = /\w{3,9}\s?\d{4}/;
-  let paymentUpdationDate =  paymentDatePattern.exec(s);
-  let updationDate = datePattern.exec(s)[0];
-  console.log(`${f} - Month: ${updationDate} Payment Update: ${paymentUpdationDate}`);
-  await db.ref("payment_updated").set(paymentUpdationDate.toString()),
-  await db.ref("updated").set(updationDate.toString());
+try {
+//    let paymentDatePattern = /\d{2}\S{2}\s+?\w{3,9}\s+?\d{4}/;
+ // let datePattern = /\w{3,9}\s?\d{4}/;
+ // let paymentUpdationDate =  paymentDatePattern.exec(s);
+  //let updationDate = datePattern.exec(s)[0];
+  //console.log(`${f} - Month: ${updationDate} Payment Update: ${paymentUpdationDate}`);
+  await db.ref("payment_updated").set("25/06/2020");
+  await db.ref("updated").set("May 2020");
+  //await db.ref("updated").set(updationDate.toString());
+} catch (e ) {
+console.log(e)
+}
 }
 
 function parsePDF(result) {
