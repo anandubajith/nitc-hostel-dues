@@ -5,6 +5,7 @@ const hasha = require('hasha');
 const admin = require('firebase-admin');
 admin.initializeApp();
 const bucket = admin.storage().bucket();
+const database = admin.database();
 
 
 const files = {
@@ -15,7 +16,7 @@ const files = {
 
 async function checkFileChange(course, url) {
 
-  const eventref = admin.database().ref(`details/${course}`);
+  const eventref = database.ref(`details/${course}`);
   const snapshot = await eventref.once('value');
   let oldHash = snapshot.val() || '';
 
@@ -27,7 +28,7 @@ async function checkFileChange(course, url) {
       destination: `${course}_${Date.now()}.pdf`,
     });
   }
-  await admin.database().ref(`details/${course}`).set(hash);
+  await database.ref(`details/${course}`).set(hash);
 
 }
 exports.archivePDFs = functions.pubsub.schedule('00 12 * * *').timeZone('Asia/Kolkata').onRun(() => {
