@@ -1,4 +1,11 @@
 const functions = require('firebase-functions');
+const download = require('download');
+const fs = require('fs');
+const hasha = require('hasha');
+const admin = require('firebase-admin');
+admin.initializeApp();
+const bucket = admin.storage().bucket();
+
 
 const files = {
   "BTECH": "http://nitc.ac.in/app/webroot/img/upload/BTECH.pdf",
@@ -6,35 +13,29 @@ const files = {
   "PHD": "http://www.nitc.ac.in/app/webroot/img/upload/PHD.pdf"
 }
 
-exports.archivePdf = functions.https.onRequest((req, res) => {
-  const bucket = admin.storage().bucket();
-  const eventref = admin.database().ref('details');
+async function checkFileChange(course, url) {
+
+  const eventref = admin.database().ref(`details/${course}`);
   const snapshot = await eventref.once('value');
-  let value = snapshot.val();
-  if (!value) {
-    value = {
-      "BTECH": "",
-      "PG": "",
-      "PHD": "",
-    }
+  let oldHash = snapshot.val() || '';
+
+  const filePath = `/tmp/${course}.pdf`;
+  fs.writeFileSync(filePath, await download(url));
+  const hash = await hasha.fromFile(filePath, { algorithm: 'md5' });
+  if (hash !== oldHash) {
+    await bucket.upload(filePath, {
+      destination: `${course}_${Date.now()}.pdf`,
+    });
   }
+  await admin.database().ref(`details/${course}`).set(hash);
 
-  const uploadPromises = [];
+}
+exports.archivePDFs = functions.pubsub.schedule('00 12 * * *').timeZone('Asia/Kolkata').onRun(() => {
 
-  Object.keys(files).forEach(course => {
-    let filePath = `/tmp/${course}.pdf`;
-    fs.writeFileSync(filePath, await download(files[course]));
-    let hash = await hasha.fromFile(filePath, { algorithm: 'md5' });
-    if (hash !== value[course]) {
-      // hash has changed => new file
-      uploadPromises.push(bucket.upload(filePath, {
-        destination: `${course}_${Date.now()}.pdf`,
-      }));
-      value[course] = hash;
-    }
-  });
+  console.info("Going to archive pdf at " + Date.now());
+  const uploadPromises = Object.keys(files).map(course => {
+    return checkFileChange(course, files[course]);
+  })
 
-  await eventref.set(value);
-  res.send("Success");
-
+  return Promise.all(uploadPromises);
 });
