@@ -260,10 +260,7 @@
                                 `
                         })
 
-                    result.innerHTML = `Name: <b>${data
-                        .name}</b><br><br>
-                                        ${dues
-                            .join('<br>')}`;
+                    result.innerHTML = `Name: <b>${data.name}</b><br><br>${dues.join('<br>')}`;
 
                     if (data.note === "*")
                         result.innerHTML += `<br>Note: <b>Awaiting funds from Kerala State SC, ST & OEC Departments</b>`
