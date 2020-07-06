@@ -12,7 +12,7 @@ const bucket = admin.storage().bucket();
 const database = admin.database();
 
 const runtimeOpts = {
-  timeoutSeconds: 300,
+  timeoutSeconds: 540,
   memory: '512MB'
 }
 
@@ -89,7 +89,6 @@ exports.archivePDFs = functions.pubsub.schedule('00 12 * * *').timeZone('Asia/Ko
 
   return Promise.all(uploadPromises);
 });
-
 
 exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(async (object) => {
   const fileBucket = object.bucket; // The Storage bucket that contains the file.
