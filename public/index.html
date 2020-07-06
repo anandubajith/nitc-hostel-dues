@@ -277,10 +277,11 @@
                                 `
                         });
 
-                    result.innerHTML = `Name: <b>${data.name}</b><br><br>${dues.join('<br>')}`;
-
+                    result.innerHTML = `Name: <b>${data.name}</b><br>`;
                     if (data.note === "*")
-                        result.innerHTML += `<br>Note: <b>Awaiting funds from Kerala State SC, ST & OEC Departments</b>`
+                        result.innerHTML += `Note: <b>Awaiting funds from Kerala State SC, ST & OEC Departments</b><br>`;
+                    
+                    result.innerHTML += `<br>${dues.join('<br>')}`;
                     document
                         .querySelector('.help-text')
                         .style
