@@ -42,25 +42,25 @@ async function checkFileChange(course, url) {
 
 }
 function getUpdationDate(data) {
-  let updated = "";
-
+  let updated = "Unknown";
   let paymentUpdated = "Data unavailable"
-  let datePattern = /\w{3,9}\s?\d{4}/;
 
+  // to extract month yyyy
+  let datePattern = /\w{3,9}\s?\d{4}/;
   if (datePattern.test(data)) {
     updated = datePattern.exec(data)[0];
     updated = updated.replace('\n', ' ');
   }
 
+  // to extract dd month yyyy
   let paymentDatePatternWithMonth = /\d{2}\S{2}\s+?\w{3,9}\s+?\d{4}/;
-
   if (paymentDatePatternWithMonth.test(data)) {
     paymentUpdated = paymentDatePatternWithMonth.exec(data)[0].toString();
     paymentUpdated = paymentUpdated.replace('\n', ' ');
   }
 
+  // to extract dd-mm-yyyy , dd/mm/yyyy or dd.mm.yyyy
   let paymentDatePattenWithSeparator = /\d{1,2}(\.|\/|-)\d{1,2}\1\d{4}/;
-
   if (paymentDatePattenWithSeparator.test(data)) {
     paymentUpdated = paymentDatePattenWithSeparator.exec(data)[0].toString();
   }
