@@ -2,6 +2,8 @@ const functions = require('firebase-functions');
 const download = require('download');
 const fs = require('fs');
 const hasha = require('hasha');
+const path = require('path');
+const os = require('os');
 const admin = require('firebase-admin');
 admin.initializeApp();
 const bucket = admin.storage().bucket();
@@ -39,4 +41,26 @@ exports.archivePDFs = functions.pubsub.schedule('00 12 * * *').timeZone('Asia/Ko
   })
 
   return Promise.all(uploadPromises);
+});
+
+
+exports.parsePDF = functions.storage.object().onFinalize(async (object) => {
+  const fileBucket = object.bucket; // The Storage bucket that contains the file.
+  const filePath = object.name; // File path in the bucket.
+  const contentType = object.contentType; // File content type.
+
+  if (!contentType.startsWith('application/pdf')) {
+    return console.log('This is not a PDF file');
+  }
+
+  const fileName = path.basename(filePath);
+  const bucket = admin.storage().bucket(fileBucket);
+  const tempFilePath = path.join(os.tmpdir(), fileName);
+
+  await bucket.file(filePath).download({ destination: tempFilePath });
+  console.log('PDF downloaded locally to', tempFilePath);
+
+  // parse the PDF
+
+  return fs.unlinkSync(tempFilePath);
 });
