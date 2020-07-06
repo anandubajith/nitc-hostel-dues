@@ -170,10 +170,10 @@
         <div class="message">
 
             <div class="help-text"><i>Enter your Roll no. to check hostel dues.</i></div>
-            <br>
+            <!--<br>
             <div class="updated"></div>
             <div class="payment_updated"></div>
-            <br>
+            <br>-->
             <div class="result"></div>
         </div>
         <div class="message">
@@ -183,10 +183,10 @@
     </main>
 
     <script>
-        const dbURL = "https://nitc-hostel-dues.firebaseio.com/";
+        const dbURL = "https://nitc-hostel-dues.firebaseio.com/data/";
         const result = document.querySelector('.result');
         const sbiCollectURL = "https://www.onlinesbi.com/sbicollect/icollecthome.htm?corpID=366005";
-        fetch(dbURL + 'updated.json')
+        /*fetch(dbURL + 'updated.json')
             .then(res => res.json())
             .then(date => {
                 document.querySelector('.updated').innerHTML = 'Up to and including the month of <b>' + date + '</b>';
@@ -195,7 +195,7 @@
             .then(res => res.json())
             .then(date => {
                 document.querySelector('.payment_updated').innerHTML = 'Payment Updated till <b>' + date + '</b>';
-            });
+            });*/
 
         if (localStorage.roll_no !== undefined && localStorage.roll_no != '') {
             document.getElementById('roll_no').value = localStorage.roll_no;
@@ -228,9 +228,17 @@
                         result.innerHTML = '<b class="notify">Invalid Roll No</b>';
                         return;
                     }
-                    result.innerHTML = `Name: <b>${data.name}</b>
-                                        <br>Due:
-                                        <b><a href="${sbiCollectURL}" target="_blank">₹${data.due}</a>${data.note}/-</b>`;
+                    let dues = Object.keys(data.dues).map(index => {
+                    let value = data.dues[index]
+                    return  `
+                    <b> Due</b>:  ₹${value.amount}<br>
+                    <b> Payment Updated</b>: ${value.paymentUpdated}<br>
+                    <b> Month</b>: ${value.updated}<br>
+                    `
+                    })
+
+                    result.innerHTML = `Name: <b>${data.name}</b><br><br>
+                                        ${dues.join('<br>')}`;
                                         
                     if (data.note === "*")
                         result.innerHTML += `<br>Note: <b>Awaiting funds from Kerala State SC, ST & OEC Departments</b>`
