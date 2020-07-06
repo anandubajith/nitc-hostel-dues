@@ -6,6 +6,7 @@ const hasha = require('hasha');
 const path = require('path');
 const os = require('os');
 const admin = require('firebase-admin');
+const { Console } = require('console');
 admin.initializeApp();
 const bucket = admin.storage().bucket();
 const database = admin.database();
@@ -74,9 +75,8 @@ exports.parsePDF = functions.storage.object().onFinalize(async (object) => {
 
   await bucket.file(filePath).download({ destination: tempFilePath });
   console.log('PDF downloaded locally to', tempFilePath);
-  console.log(fileName);
-  // parse the PDF
 
+  // parse the PDF
   const data = await extract(tempFilePath);
 
   // get the paymentUpdateDate, updatedDate
@@ -84,15 +84,17 @@ exports.parsePDF = functions.storage.object().onFinalize(async (object) => {
   const promises = [];
   const updationDates = getUpdationDate(data);
 
-  result.pageTables.forEach(page => {
+  const normalizedName = fileName.split('.')[0];
+
+  data.pageTables.forEach(page => {
     page.tables.forEach(item => {
       if (item[0].length === 9) {
         promises.push(
-          db.ref(`data/${item[0]}`).update({
+          database.ref(`data/${item[0]}`).update({
             name: item[1],   
             note: item[3]
           }),
-          db.ref(`data/${item[0]}/dues/${fileName}`).update({
+          database.ref(`data/${item[0]}/dues/${normalizedName}`).update({
             amount: item[2],
             paymentUpdated: updationDates.paymentUpdated,
             updated: updationDates.updated,
@@ -100,11 +102,11 @@ exports.parsePDF = functions.storage.object().onFinalize(async (object) => {
         );
       } else if (item[1].length === 9) {
         promises.push(
-          db.ref(`data/${item[1]}`).update({
+          database.ref(`data/${item[1]}`).update({
             name: item[2],   
             note: item[4]
           }),
-          db.ref(`data/${item[1]}/dues/${fileName}`).update({
+          database.ref(`data/${item[1]}/dues/${normalizedName}`).update({
             amount: item[3],
             paymentUpdated: updationDates.paymentUpdated,
             updated: updationDates.updated,
@@ -113,6 +115,7 @@ exports.parsePDF = functions.storage.object().onFinalize(async (object) => {
       }
     });
   });
+  console.log("Awaiting " + promises.length + " promises")
   promises.push(fs.unlinkSync(tempFilePath));
 
   return Promise.all(promises);
