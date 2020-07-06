@@ -3,7 +3,8 @@
 
 <head>
     <title>Hostel Dues | NIT Calicut</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0,, shrink-to-fit=no">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0,, shrink-to-fit=no">
     <meta charset="utf-8">
     <meta name="Description" content="A webapp to retrive Hostel Dues of NIT-C students">
     <meta name="mobile-web-app-capable" content="yes">
@@ -21,15 +22,15 @@
         html {
             height: 100%;
         }
-        
-        html,
+
         body,
         div,
-        form {
+        form,
+        html {
             margin: 0;
             padding: 0;
         }
-        
+
         h1,
         h2,
         h3,
@@ -38,22 +39,22 @@
         h6 {
             font-weight: normal;
         }
-        
+
         img {
             border: 0;
         }
-        
+
         body {
             height: 100%;
             font-family: sans-serif;
             background-size: cover;
-            background-image: url('../bg.jpg')
+            background-image: url("../bg.jpg");
         }
-        
+
         a {
             color: #fff;
         }
-        
+
         nav {
             background: #007bff;
             color: white;
@@ -63,17 +64,17 @@
             justify-content: center;
             margin-bottom: 1em;
         }
-        
+
         nav h1 {
             margin: 0;
         }
-        
+
         nav img {
             height: 45px;
             width: 45px;
             margin-right: 0.5em;
         }
-        
+
         main {
             box-sizing: border-box;
             width: 100%;
@@ -81,13 +82,13 @@
             margin: auto;
             padding: 1em;
         }
-        
+
         .notify {
             color: red;
             text-align: center;
-            font-weight: bold
+            font-weight: bold;
         }
-        
+
         form {
             box-sizing: border-box;
             border-radius: 5px;
@@ -96,7 +97,7 @@
             background-color: #000;
             background-color: rgba(0, 0, 0, 0.7);
         }
-        
+
         input {
             box-sizing: border-box;
             width: 100%;
@@ -104,11 +105,11 @@
             padding: 1em;
             border-radius: 5px;
         }
-        
+
         input:focus {
             outline: 0;
         }
-        
+
         .button {
             text-transform: uppercase;
             -webkit-appearance: none;
@@ -118,7 +119,7 @@
             background-color: #007bff;
             color: #fff;
         }
-        
+
         .message {
             margin-top: 1em;
             padding: 1em;
@@ -132,17 +133,17 @@
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
     <script>
         var OneSignal = window.OneSignal || [];
-        OneSignal.push(function() {
+        OneSignal.push(function () {
             OneSignal.init({
                 appId: "31eee611-f787-450c-8eaf-4c0b249c8e2f",
                 notifyButton: {
-                    enable: false,
-                },
+                    enable: false
+                }
             });
         });
     </script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145913340-1"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-145913340-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -164,20 +165,21 @@
     <main>
         <form id="due_form">
             <label for="roll_no" style="display:none">Roll No.</label>
-            <input type="text" placeholder="Roll number (Eg. B180288CS)" name="roll_no" id="roll_no" required="true" autocomplete="off">
+            <input type="text" placeholder="Roll number (Eg. B180288CS)" name="roll_no" id="roll_no" required="true"
+                autocomplete="off">
             <input class="button" type="submit" id="check" value="Check">
         </form>
         <div class="message">
 
-            <div class="help-text"><i>Enter your Roll no. to check hostel dues.</i></div>
-            <!--<br>
-            <div class="updated"></div>
-            <div class="payment_updated"></div>
-            <br>-->
+            <div class="help-text">
+                <i>Enter your Roll no. to check hostel dues.</i>
+            </div>
+            <!--<br> <div class="updated"></div> <div class="payment_updated"></div> <br>-->
             <div class="result"></div>
         </div>
         <div class="message">
-            <a href="/about.html">about</a> &middot;
+            <a href="/about.html">about</a>
+            &middot;
             <a href="#" id="subscribe" style="display:none">subscribe to notifications</a>
         </div>
     </main>
@@ -187,40 +189,57 @@
         const result = document.querySelector('.result');
         const sbiCollectURL = "https://www.onlinesbi.com/sbicollect/icollecthome.htm?corpID=366005";
         /*fetch(dbURL + 'updated.json')
-            .then(res => res.json())
-            .then(date => {
-                document.querySelector('.updated').innerHTML = 'Up to and including the month of <b>' + date + '</b>';
-            });
-        fetch(dbURL + 'payment_updated.json')
-            .then(res => res.json())
-            .then(date => {
-                document.querySelector('.payment_updated').innerHTML = 'Payment Updated till <b>' + date + '</b>';
-            });*/
+        .then(res => res.json())
+        .then(date => {
+            document.querySelector('.updated').innerHTML = 'Up to and including the month of <b>' + date + '</b>';
+        });
+    fetch(dbURL + 'payment_updated.json')
+        .then(res => res.json())
+        .then(date => {
+            document.querySelector('.payment_updated').innerHTML = 'Payment Updated till <b>' + date + '</b>';
+        });*/
 
         if (localStorage.roll_no !== undefined && localStorage.roll_no != '') {
-            document.getElementById('roll_no').value = localStorage.roll_no;
+            document
+                .getElementById('roll_no')
+                .value = localStorage.roll_no;
             updateValue();
         }
-        document.getElementById('roll_no').addEventListener('change', function() {
-            localStorage.roll_no = document.getElementById('roll_no').value;
-        });
+        document
+            .getElementById('roll_no')
+            .addEventListener('change', function () {
+                localStorage.roll_no = document
+                    .getElementById('roll_no')
+                    .value;
+            });
 
-        document.getElementById('due_form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            result.innerText = 'Loading';
-            updateValue();
-        });
-        document.getElementById('check').addEventListener('click', function(e) {
-            e.preventDefault();
-            result.innerText = 'Loading';
-            updateValue();
-        })
-        navigator.serviceWorker && navigator.serviceWorker.register('/OneSignalSDKWorker.js').then(function(registration) {
-            console.log('Excellent, registered with scope: ', registration.scope);
-        });
+        document
+            .getElementById('due_form')
+            .addEventListener('submit', function (e) {
+                e.preventDefault();
+                result.innerText = 'Loading';
+                updateValue();
+            });
+        document
+            .getElementById('check')
+            .addEventListener('click', function (e) {
+                e.preventDefault();
+                result.innerText = 'Loading';
+                updateValue();
+            })
+        navigator.serviceWorker && navigator
+            .serviceWorker
+            .register('/OneSignalSDKWorker.js')
+            .then(function (registration) {
+                console.log('Excellent, registered with scope: ', registration.scope);
+            });
 
         function updateValue() {
-            let roll_no = document.getElementById('roll_no').value.toUpperCase();
+            let roll_no = document
+                .getElementById('roll_no')
+                .value
+                .toUpperCase();
+                
             fetch(dbURL + roll_no + '.json')
                 .then(res => res.json())
                 .then(data => {
@@ -228,27 +247,34 @@
                         result.innerHTML = '<b class="notify">Invalid Roll No</b>';
                         return;
                     }
-                    let dues = Object.keys(data.dues).map(index => {
-                    let value = data.dues[index]
-                    return  `
-                    <b> Due</b>:  ₹${value.amount}<br>
-                    <b> Payment Updated</b>: ${value.paymentUpdated}<br>
-                    <b> Month</b>: ${value.updated}<br>
-                    `
-                    })
+                    let dues = Object
+                        .keys(data.dues)
+                        .map(index => {
+                            let value = data.dues[index]
+                            return `
+                                    <b> Due</b>:  ₹${value.amount}<br>
+                                    <b> Payment Updated</b>: ${value.paymentUpdated}<br>
+                                    <b> Month</b>: ${value.updated}<br>
+                                `
+                        })
 
-                    result.innerHTML = `Name: <b>${data.name}</b><br><br>
-                                        ${dues.join('<br>')}`;
-                                        
+                    result.innerHTML = `Name: <b>${data
+                        .name}</b><br><br>
+                                        ${dues
+                            .join('<br>')}`;
+
                     if (data.note === "*")
                         result.innerHTML += `<br>Note: <b>Awaiting funds from Kerala State SC, ST & OEC Departments</b>`
-                    document.querySelector('.help-text').style.display = 'none';
+                    document
+                        .querySelector('.help-text')
+                        .style
+                        .display = 'none';
                 });
 
         }
 
         function onManageWebPushSubscriptionButtonClicked(event) {
-            getSubscriptionState().then(function(state) {
+            getSubscriptionState().then(function (state) {
                 if (state.isPushEnabled) {
                     /* Subscribed, opt them out */
                     OneSignal.setSubscription(false);
@@ -270,8 +296,10 @@
             var subscribeText = "subscribe to notifications";
             var unsubscribeText = "unsubscribe from notifications";
 
-            getSubscriptionState().then(function(state) {
-                var buttonText = !state.isPushEnabled || state.isOptedOut ? subscribeText : unsubscribeText;
+            getSubscriptionState().then(function (state) {
+                var buttonText = !state.isPushEnabled || state.isOptedOut
+                    ? subscribeText
+                    : unsubscribeText;
 
                 var element = document.querySelector(buttonSelector);
                 if (element === null) {
@@ -291,31 +319,27 @@
         }
 
         function getSubscriptionState() {
-            return Promise.all([
-                OneSignal.isPushNotificationsEnabled(),
-                OneSignal.isOptedOut()
-            ]).then(function(result) {
-                var isPushEnabled = result[0];
-                var isOptedOut = result[1];
+            return Promise
+                .all([OneSignal.isPushNotificationsEnabled(), OneSignal.isOptedOut()])
+                .then(function (result) {
+                    var isPushEnabled = result[0];
+                    var isOptedOut = result[1];
 
-                return {
-                    isPushEnabled: isPushEnabled,
-                    isOptedOut: isOptedOut
-                };
-            });
+                    return { isPushEnabled: isPushEnabled, isOptedOut: isOptedOut };
+                });
         }
 
         var OneSignal = OneSignal || [];
         var buttonSelector = "#subscribe";
 
         /* This example assumes you've already initialized OneSignal */
-        OneSignal.push(function() {
+        OneSignal.push(function () {
             // If we're on an unsupported browser, do nothing
             if (!OneSignal.isPushNotificationsSupported()) {
                 return;
             }
             updateMangeWebPushSubscriptionButton(buttonSelector);
-            OneSignal.on("subscriptionChange", function(isSubscribed) {
+            OneSignal.on("subscriptionChange", function (isSubscribed) {
                 /* If the user's subscription state changes during the page's session, update the button text */
                 updateMangeWebPushSubscriptionButton(buttonSelector);
             });
