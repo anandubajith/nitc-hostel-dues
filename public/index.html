@@ -239,10 +239,11 @@
                 .getElementById('roll_no')
                 .value
                 .toUpperCase();
-                
+
             fetch(dbURL + roll_no + '.json')
                 .then(res => res.json())
                 .then(data => {
+                    console.log(data);
                     if (data == null) {
                         result.innerHTML = '<b class="notify">Invalid Roll No</b>';
                         return;
