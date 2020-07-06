@@ -6,7 +6,6 @@ const hasha = require('hasha');
 const path = require('path');
 const os = require('os');
 const admin = require('firebase-admin');
-const { Console } = require('console');
 admin.initializeApp();
 const bucket = admin.storage().bucket();
 const database = admin.database();
