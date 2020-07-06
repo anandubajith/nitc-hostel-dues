@@ -54,7 +54,6 @@ function getUpdationDate(data) {
   // to extract month yyyy
   let datePattern = /\w{3,9}\s*\d{4}/;
   if (datePattern.test(data)) {
-    console.log('managed to execute');
     updated = datePattern.exec(data)[0];
     updated = updated.replace(/\n/g, ' ');
   }
@@ -84,7 +83,7 @@ function getUpdationDate(data) {
 exports.archivePDFs = functions.pubsub.schedule('00 12 * * *').timeZone('Asia/Kolkata').onRun(() => {
 
   let fetchTime = Date.now();
-  console.info("Going to archive pdf at " + fetchTime);
+  functions.logger.info("Going to archive pdf at " + fetchTime);
   const promises = Object.keys(files).map(course => {
     return checkFileChange(course, files[course], fetchTime);
   })
@@ -100,7 +99,7 @@ exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(as
   const contentType = object.contentType; // File content type.
 
   if (!contentType.startsWith('application/pdf')) {
-    return console.log('This is not a PDF file');
+    return functions.logger.info('This is not a PDF file');
   }
 
   const fileName = path.basename(filePath);
@@ -108,7 +107,7 @@ exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(as
   const tempFilePath = path.join(os.tmpdir(), fileName);
 
   await bucket.file(filePath).download({ destination: tempFilePath });
-  console.log('PDF downloaded locally to', tempFilePath);
+  functions.logger.log('PDF downloaded locally to', tempFilePath);
 
   // parse the PDF
   const data = await extract(tempFilePath);
@@ -119,7 +118,7 @@ exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(as
   const updationDates = getUpdationDate(data.pageTables[0].tables[0][0]);
 
   const normalizedName = fileName.split('.')[0];
-  console.log("Normalized path: " + normalizedName);
+  functions.logger.log("Normalized path: " + normalizedName);
 
   data.pageTables.forEach(page => {
     page.tables.forEach(item => {
@@ -150,7 +149,7 @@ exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(as
       }
     });
   });
-  console.log("Awaiting " + promises.length + " promises")
+  functions.logger.info("Awaiting " + promises.length + " promises")
   promises.push(fs.unlinkSync(tempFilePath));
 
   return Promise.all(promises);
@@ -162,7 +161,7 @@ exports.sendNotification = functions.database.ref('details/{course}').onWrite(as
     return;
   }
   try {
-    console.log(`Dues updated, sending notification`);
+    functions.logger.log(`Dues updated, sending notification`);
     await fetch('https://onesignal.com/api/v1/notifications', {
       method: 'POST',
       headers: {
@@ -177,6 +176,6 @@ exports.sendNotification = functions.database.ref('details/{course}').onWrite(as
       })
     });
   } catch (e) {
-    console.error(e.message);
+    functions.logger.error(e.message);
   }
 });
