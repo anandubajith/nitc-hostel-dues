@@ -5,6 +5,7 @@ const fs = require('fs');
 const hasha = require('hasha');
 const path = require('path');
 const os = require('os');
+const fetch = require('node-fetch');
 const admin = require('firebase-admin');
 admin.initializeApp();
 const bucket = admin.storage().bucket();
@@ -44,9 +45,8 @@ async function checkFileChange(course, url, fetchTime) {
   await database.ref(`details/${course}`).set(hash);
 
 }
+
 function getUpdationDate(data) {
-  console.log('data')
-  console.log(data);
 
   let updated = "Unknown";
   let paymentUpdated = "Data unavailable"
@@ -154,4 +154,29 @@ exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(as
   promises.push(fs.unlinkSync(tempFilePath));
 
   return Promise.all(promises);
+});
+
+exports.sendNotification = functions.database.ref('details/{course}').onWrite(async (snapshot, context) => {
+  // just a workaround to trigger notification only once
+  if (context.params.course !== 'BTECH') {
+    return;
+  }
+  try {
+    console.log(`Dues updated, sending notification`);
+    await fetch('https://onesignal.com/api/v1/notifications', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        "Content-Type": "application/json; charset=utf-8",
+        'Authorization': `Basic ${functions.config().onesignal.api_key}`
+      },
+      body: JSON.stringify({
+        app_id: functions.config().onesignal.app_id,
+        contents: { en: `Hostel Dues updated\nTap to view` },
+        included_segments: ["All"]
+      })
+    });
+  } catch (e) {
+    console.error(e.message);
+  }
 });
