@@ -42,13 +42,35 @@ async function checkFileChange(course, url) {
 
 }
 function getUpdationDate(data) {
-  let updated  = "MMMM YYYY";
-  let paymentUpdated = "DD/MM/YYYY"
+  let updated = "";
+
+  let paymentUpdated = "Data unavailable"
+  let datePattern = /\w{3,9}\s?\d{4}/;
+
+  if (datePattern.test(data)) {
+    updated = datePattern.exec(data)[0];
+    updated = updated.replace('\n', ' ');
+  }
+
+  let paymentDatePatternWithMonth = /\d{2}\S{2}\s+?\w{3,9}\s+?\d{4}/;
+
+  if (paymentDatePatternWithMonth.test(data)) {
+    paymentUpdated = paymentDatePatternWithMonth.exec(data)[0].toString();
+    paymentUpdated = paymentUpdated.replace('\n', ' ');
+  }
+
+  let paymentDatePattenWithSeparator = /\d{1,2}(\.|\/|-)\d{1,2}\1\d{4}/;
+
+  if (paymentDatePattenWithSeparator.test(data)) {
+    paymentUpdated = paymentDatePattenWithSeparator.exec(data)[0].toString();
+  }
+
   return {
-    paymentUpdated, 
+    paymentUpdated,
     updated
   }
 }
+
 exports.archivePDFs = functions.pubsub.schedule('00 12 * * *').timeZone('Asia/Kolkata').onRun(() => {
 
   console.info("Going to archive pdf at " + Date.now());
@@ -80,18 +102,19 @@ exports.parsePDF = functions.storage.object().onFinalize(async (object) => {
   const data = await extract(tempFilePath);
 
   // get the paymentUpdateDate, updatedDate
-  
+
   const promises = [];
   const updationDates = getUpdationDate(data);
 
   const normalizedName = fileName.split('.')[0];
+  console.log("Normalized path: " + normalizedName);
 
   data.pageTables.forEach(page => {
     page.tables.forEach(item => {
       if (item[0].length === 9) {
         promises.push(
           database.ref(`data/${item[0]}`).update({
-            name: item[1],   
+            name: item[1],
             note: item[3]
           }),
           database.ref(`data/${item[0]}/dues/${normalizedName}`).update({
@@ -103,7 +126,7 @@ exports.parsePDF = functions.storage.object().onFinalize(async (object) => {
       } else if (item[1].length === 9) {
         promises.push(
           database.ref(`data/${item[1]}`).update({
-            name: item[2],   
+            name: item[2],
             note: item[4]
           }),
           database.ref(`data/${item[1]}/dues/${normalizedName}`).update({
