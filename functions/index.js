@@ -1,4 +1,5 @@
 const functions = require('firebase-functions');
+const pdf_table_extractor = require("pdf-table-extractor");
 const download = require('download');
 const fs = require('fs');
 const hasha = require('hasha');
@@ -14,6 +15,12 @@ const files = {
   "BTECH": "http://nitc.ac.in/app/webroot/img/upload/BTECH.pdf",
   "PG": "http://www.nitc.ac.in/app/webroot/img/upload/PG.pdf",
   "PHD": "http://www.nitc.ac.in/app/webroot/img/upload/PHD.pdf"
+}
+
+function extract(file) {
+  return new Promise(((resolve, reject) => {
+    pdf_table_extractor(file, resolve, reject);
+  }));
 }
 
 async function checkFileChange(course, url) {
@@ -32,6 +39,14 @@ async function checkFileChange(course, url) {
   }
   await database.ref(`details/${course}`).set(hash);
 
+}
+function getUpdationDate(data) {
+  let updated  = "MMMM YYYY";
+  let paymentUpdated = "DD/MM/YYYY"
+  return {
+    paymentUpdated, 
+    updated
+  }
 }
 exports.archivePDFs = functions.pubsub.schedule('00 12 * * *').timeZone('Asia/Kolkata').onRun(() => {
 
@@ -59,8 +74,46 @@ exports.parsePDF = functions.storage.object().onFinalize(async (object) => {
 
   await bucket.file(filePath).download({ destination: tempFilePath });
   console.log('PDF downloaded locally to', tempFilePath);
-
+  console.log(fileName);
   // parse the PDF
 
-  return fs.unlinkSync(tempFilePath);
+  const data = await extract(tempFilePath);
+
+  // get the paymentUpdateDate, updatedDate
+  
+  const promises = [];
+  const updationDates = getUpdationDate(data);
+
+  result.pageTables.forEach(page => {
+    page.tables.forEach(item => {
+      if (item[0].length === 9) {
+        promises.push(
+          db.ref(`data/${item[0]}`).update({
+            name: item[1],   
+            note: item[3]
+          }),
+          db.ref(`data/${item[0]}/dues/${fileName}`).update({
+            amount: item[2],
+            paymentUpdated: updationDates.paymentUpdated,
+            updated: updationDates.updated,
+          })
+        );
+      } else if (item[1].length === 9) {
+        promises.push(
+          db.ref(`data/${item[1]}`).update({
+            name: item[2],   
+            note: item[4]
+          }),
+          db.ref(`data/${item[1]}/dues/${fileName}`).update({
+            amount: item[3],
+            paymentUpdated: updationDates.paymentUpdated,
+            updated: updationDates.updated,
+          })
+        );
+      }
+    });
+  });
+  promises.push(fs.unlinkSync(tempFilePath));
+
+  return Promise.all(promises);
 });
