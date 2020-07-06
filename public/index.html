@@ -244,7 +244,8 @@
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
-                    if (data == null) {
+                    if
+                    if (data == null || data.hasOwnProperty('error')) {
                         result.innerHTML = '<b class="notify">Invalid Roll No</b>';
                         return;
                     }
