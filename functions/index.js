@@ -104,7 +104,7 @@ exports.parsePDF = functions.storage.object().onFinalize(async (object) => {
   // get the paymentUpdateDate, updatedDate
 
   const promises = [];
-  const updationDates = getUpdationDate(data);
+  const updationDates = getUpdationDate(data.pageTables[0].tables[0][0]);
 
   const normalizedName = fileName.split('.')[0];
   console.log("Normalized path: " + normalizedName);
