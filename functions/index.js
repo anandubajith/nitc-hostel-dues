@@ -67,11 +67,13 @@ function getUpdationDate(data) {
     paymentUpdated = paymentUpdated.replace(/\n/g, ' ');
   }
 
-  // to extract dd-mm-yyyy , dd/mm/yyyy or dd.mm.yyyy
+  // to extract dd-mm-yyyy , dd/mm/yyyy or dd.mm.yyyy and make consistent
   let paymentDatePattenWithSeparator = /\d{1,2}(\.|\/|-)\d{1,2}\1\d{4}/;
   if (paymentDatePattenWithSeparator.test(data)) {
     paymentUpdated = paymentDatePattenWithSeparator.exec(data)[0].toString();
     paymentUpdated = paymentUpdated.replace(/\n/g, ' ');
+    paymentUpdated = paymentUpdated.replace(/\./g, '-');
+    paymentUpdated = paymentUpdated.replace(/\//g, '-');
   }
 
   return {
