@@ -251,9 +251,9 @@
                         .map(index => {
                             let value = data.dues[index]
                             return `
-                                    <b> Due</b>:  ₹${value.amount}<br>
-                                    <b> Month</b>: ${value.updated}<br>
-                                    <b> Payment updated</b>: ${value.paymentUpdated}<br>
+                                    Due:  <b>₹${value.amount}</b><br>
+                                    Month: <b>${value.updated}</b><br>
+                                    Payment updated: <b> ${value.paymentUpdated}</b><br>
                                 `
                         })
 
