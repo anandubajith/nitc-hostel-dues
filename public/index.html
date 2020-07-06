@@ -174,7 +174,8 @@
             <div class="help-text">
                 <i>Enter your Roll no. to check hostel dues.</i>
             </div>
-            <!--<br> <div class="updated"></div> <div class="payment_updated"></div> <br>-->
+            <br> <div class="updated"></div> 
+            <!--<div class="payment_updated"></div> <br>-->
             <div class="result"></div>
         </div>
         <div class="message">
@@ -185,19 +186,15 @@
     </main>
 
     <script>
-        const dbURL = "https://nitc-hostel-dues.firebaseio.com/data/";
+        const dbURL = "https://nitc-hostel-dues.firebaseio.com";
         const result = document.querySelector('.result');
         const sbiCollectURL = "https://www.onlinesbi.com/sbicollect/icollecthome.htm?corpID=366005";
-        /*fetch(dbURL + 'updated.json')
-        .then(res => res.json())
+        fetch(dbURL + '/details/fetchTime.json')
+        .then(res => res.text())
         .then(date => {
-            document.querySelector('.updated').innerHTML = 'Up to and including the month of <b>' + date + '</b>';
+        console.log(date)
+            document.querySelector('.updated').innerHTML = 'Last fetched: <b>' + date + '</b>';
         });
-    fetch(dbURL + 'payment_updated.json')
-        .then(res => res.json())
-        .then(date => {
-            document.querySelector('.payment_updated').innerHTML = 'Payment Updated till <b>' + date + '</b>';
-        });*/
 
         if (localStorage.roll_no !== undefined && localStorage.roll_no != '') {
             document
@@ -240,7 +237,7 @@
                 .value
                 .toUpperCase();
 
-            fetch(dbURL + roll_no + '.json')
+            fetch(`${dbURL}/data/${roll_no}.json`)
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
