@@ -82,12 +82,15 @@ function getUpdationDate(data) {
 
 exports.archivePDFs = functions.pubsub.schedule('00 12 * * *').timeZone('Asia/Kolkata').onRun(() => {
 
-  console.info("Going to archive pdf at " + Date.now());
-  const uploadPromises = Object.keys(files).map(course => {
+  let fetchTime = Date.now();
+  console.info("Going to archive pdf at " + fetchTime);
+  const promises = Object.keys(files).map(course => {
     return checkFileChange(course, files[course]);
   })
 
-  return Promise.all(uploadPromises);
+  promises.push(database.ref(`details/fetchTime`).set(fetchTime));
+
+  return Promise.all(promises);
 });
 
 exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(async (object) => {
