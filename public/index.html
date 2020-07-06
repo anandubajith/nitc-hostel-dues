@@ -128,6 +128,17 @@
             background-color: #000;
             background-color: rgba(0, 0, 0, 0.7);
         }
+        .item {
+            display:block;
+            text-decoration:none;
+            background: #000;
+            padding: 10px;
+            transform: scale(0.95);
+            user-select: none;
+        }
+        .item.main {
+            transform: scale(1);
+        }
     </style>
     <link rel="manifest" href="/manifest.json" />
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
@@ -175,7 +186,6 @@
                 <i>Enter your Roll no. to check hostel dues.</i>
             </div>
             <br> <div class="updated"></div> <br> 
-            <!--<div class="payment_updated"></div> <br>-->
             <div class="result"></div>
         </div>
         <div class="message">
@@ -192,7 +202,6 @@
         fetch(dbURL + '/details/fetchTime.json')
         .then(res => res.text())
         .then(date => {
-        console.log(date)
             document.querySelector('.updated').innerHTML = 'Last fetched: <b>' + new Date(parseInt(date,10)).toLocaleDateString() + '</b>';
         });
 
@@ -240,22 +249,33 @@
             fetch(`${dbURL}/data/${roll_no}.json`)
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
-                    
+
                     if (data == null || data.hasOwnProperty('error')) {
                         result.innerHTML = '<b class="notify">Invalid Roll No</b>';
                         return;
                     }
+
                     let dues = Object
                         .keys(data.dues)
-                        .map(index => {
-                            let value = data.dues[index]
-                            return `
+                        .map((fileName, index) => {
+                            let value = data.dues[fileName]
+                            if ( index === 0 ) {
+                                return `
+                                <a class="item main" href="${sbiCollectURL}" target="_blank" rel="noopener" rel="noreferrer">
                                     Due:  <b>₹${value.amount}</b><br>
                                     Month: <b>${value.updated}</b><br>
                                     Payment updated: <b> ${value.paymentUpdated}</b><br>
+                                </a>
                                 `
-                        })
+                            }
+                            return `
+                                <div class="item">
+                                    Due:  <b>₹${value.amount}</b><br>
+                                    Month: <b>${value.updated}</b><br>
+                                    Payment updated: <b> ${value.paymentUpdated}</b><br>
+                                </div>
+                                `
+                        });
 
                     result.innerHTML = `Name: <b>${data.name}</b><br><br>${dues.join('<br>')}`;
 
