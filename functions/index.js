@@ -11,6 +11,10 @@ admin.initializeApp();
 const bucket = admin.storage().bucket();
 const database = admin.database();
 
+const runtimeOpts = {
+  timeoutSeconds: 300,
+  memory: '512MB'
+}
 
 const files = {
   "BTECH": "http://nitc.ac.in/app/webroot/img/upload/BTECH.pdf",
@@ -42,27 +46,32 @@ async function checkFileChange(course, url) {
 
 }
 function getUpdationDate(data) {
+  console.log('data')
+  console.log(data);
+
   let updated = "Unknown";
   let paymentUpdated = "Data unavailable"
 
   // to extract month yyyy
-  let datePattern = /\w{3,9}\s?\d{4}/;
+  let datePattern = /\w{3,9}\s*\d{4}/;
   if (datePattern.test(data)) {
+    console.log('managed to execute');
     updated = datePattern.exec(data)[0];
-    updated = updated.replace('\n', ' ');
+    updated = updated.replace(/\n/g, ' ');
   }
 
   // to extract dd month yyyy
   let paymentDatePatternWithMonth = /\d{2}\S{2}\s+?\w{3,9}\s+?\d{4}/;
   if (paymentDatePatternWithMonth.test(data)) {
     paymentUpdated = paymentDatePatternWithMonth.exec(data)[0].toString();
-    paymentUpdated = paymentUpdated.replace('\n', ' ');
+    paymentUpdated = paymentUpdated.replace(/\n/g, ' ');
   }
 
   // to extract dd-mm-yyyy , dd/mm/yyyy or dd.mm.yyyy
   let paymentDatePattenWithSeparator = /\d{1,2}(\.|\/|-)\d{1,2}\1\d{4}/;
   if (paymentDatePattenWithSeparator.test(data)) {
     paymentUpdated = paymentDatePattenWithSeparator.exec(data)[0].toString();
+    paymentUpdated = paymentUpdated.replace(/\n/g, ' ');
   }
 
   return {
@@ -82,7 +91,7 @@ exports.archivePDFs = functions.pubsub.schedule('00 12 * * *').timeZone('Asia/Ko
 });
 
 
-exports.parsePDF = functions.storage.object().onFinalize(async (object) => {
+exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(async (object) => {
   const fileBucket = object.bucket; // The Storage bucket that contains the file.
   const filePath = object.name; // File path in the bucket.
   const contentType = object.contentType; // File content type.

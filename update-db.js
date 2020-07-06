@@ -15,49 +15,47 @@ admin.initializeApp({
 });
 const db = admin.database();
 
-async function setLastUpdated(f, s) {
-  let paymentDatePattern = /\d{2}\S{2}\s+?\w{3,9}\s+?\d{4}/;
-  let datePattern = /\w{3,9}\s?\d{4}/;
-  let paymentUpdationDate =  paymentDatePattern.exec(s);
-  let updationDate = datePattern.exec(s)[0];
-  console.log(`${f} - Month: ${updationDate} Payment Update: ${paymentUpdationDate}`);
-  await db.ref("payment_updated").set(paymentUpdationDate.toString()),
-  await db.ref("updated").set(updationDate.toString());
-}
+function getUpdationDate(data) {
+  console.log('data')
+  console.log(data);
 
+  let updated = "Unknown";
+  let paymentUpdated = "Data unavailable"
+
+  // to extract month yyyy
+  let datePattern = /\w{3,9}\s?\d{4}/;
+  if (datePattern.test(data)) {
+    console.log('managed to execute');
+    updated = datePattern.exec(data)[0];
+    updated = updated.replace('\n', ' ');
+  }
+
+  // to extract dd month yyyy
+  let paymentDatePatternWithMonth = /\d{2}\S{2}\s+?\w{3,9}\s+?\d{4}/;
+  if (paymentDatePatternWithMonth.test(data)) {
+    paymentUpdated = paymentDatePatternWithMonth.exec(data)[0].toString();
+    paymentUpdated = paymentUpdated.replace('\n', ' ');
+  }
+
+  // to extract dd-mm-yyyy , dd/mm/yyyy or dd.mm.yyyy
+  let paymentDatePattenWithSeparator = /\d{1,2}(\.|\/|-)\d{1,2}\1\d{4}/;
+  if (paymentDatePattenWithSeparator.test(data)) {
+    paymentUpdated = paymentDatePattenWithSeparator.exec(data)[0].toString();
+  }
+
+  return {
+    paymentUpdated,
+    updated
+  }
+}
 
 function parsePDF(result) {
   let promises = [];
-  setLastUpdated(
-    result.pageTables[0].tables[2][0],
-    result.pageTables[0].tables[0][0]
-  );
-
-  // use filter and flatMaps?
-  result.pageTables.map(page => {
-    page.tables.map(item => {
-      // Find a permanent solution 
-      // They keep changing indexes
-      if (item[0].length === 9) {
-        promises.push(
-          db.ref(item[0]).set({
-            name: item[1],
-            due: item[2],
-            note: item[3]
-          })
-        );
-      } else if (item[1].length === 9) {
-        promises.push(
-          db.ref(item[1]).set({
-            name: item[2],
-            due: item[3],
-            note: item[4]
-          })
-        );
-      }
-    });
-  });
-  return Promise.all(promises);
+  // setLastUpdated(
+  //   result.pageTables[0].tables[2][0],
+  //   result.pageTables[0].tables[0][0]
+  // );
+  console.log(getUpdationDate(result.pageTables[0].tables[0][0].replace(/\n/g, " ")));
 }
 
 const fileNames = [
