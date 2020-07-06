@@ -1,6 +1,12 @@
 {
   "rules": {
-    ".read": true,
-    ".write": false
+    ".read": false,
+    ".write": false,
+    "data": {
+      "$rollNo": {
+        ".read": true,
+        ".write": false
+      }
+    }
   }
 }
