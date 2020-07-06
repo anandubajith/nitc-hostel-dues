@@ -28,7 +28,7 @@ function extract(file) {
   }));
 }
 
-async function checkFileChange(course, url) {
+async function checkFileChange(course, url, fetchTime) {
 
   const eventref = database.ref(`details/${course}`);
   const snapshot = await eventref.once('value');
@@ -39,7 +39,7 @@ async function checkFileChange(course, url) {
   const hash = await hasha.fromFile(filePath, { algorithm: 'md5' });
   if (hash !== oldHash) {
     await bucket.upload(filePath, {
-      destination: `${course}_${Date.now()}.pdf`,
+      destination: `${course}_${fetchTime}.pdf`,
     });
   }
   await database.ref(`details/${course}`).set(hash);
@@ -85,7 +85,7 @@ exports.archivePDFs = functions.pubsub.schedule('00 12 * * *').timeZone('Asia/Ko
   let fetchTime = Date.now();
   console.info("Going to archive pdf at " + fetchTime);
   const promises = Object.keys(files).map(course => {
-    return checkFileChange(course, files[course]);
+    return checkFileChange(course, files[course], fetchTime);
   })
 
   promises.push(database.ref(`details/fetchTime`).set(fetchTime));
