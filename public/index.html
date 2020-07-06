@@ -193,7 +193,7 @@
         .then(res => res.text())
         .then(date => {
         console.log(date)
-            document.querySelector('.updated').innerHTML = 'Last fetched: <b>' + date + '</b>';
+            document.querySelector('.updated').innerHTML = 'Last fetched: <b>' + new Date(parseInt(date,10)).toLocaleDateString() + '</b>';
         });
 
         if (localStorage.roll_no !== undefined && localStorage.roll_no != '') {

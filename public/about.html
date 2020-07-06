@@ -1,158 +1,175 @@
 <!DOCTYPE HTML>
 <html lang="en">
 
-<head>
-  <title>About Hostel Dues | NIT Calicut</title>
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-  <meta charset="utf-8">
-  <meta name="theme-color" content="#007bff">
+  <head>
+    <title>About Hostel Dues | NIT Calicut</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#007bff">
 
-  <meta name="Description" content="A webapp to retrive Hostel Dues of NIT-C students">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="application-name" content="HostelDues">
-  <meta name="apple-mobile-web-app-title" content="HostelDues">
-  <meta name="theme-color" content="#007bff">
-  <meta name="msapplication-navbutton-color" content="#007bff">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="msapplication-starturl" content="/">
-  <link rel="icon" type="image/png" sizes="512x512" href="nitc-512.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="nitc-512.png">
-  <link rel="icon" href="/favicon.ico">
-  <style type="text/css">
-    html {
-      height: 100%;
-    }
+    <meta name="Description" content="A webapp to retrive Hostel Dues of NIT-C students">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="HostelDues">
+    <meta name="apple-mobile-web-app-title" content="HostelDues">
+    <meta name="theme-color" content="#007bff">
+    <meta name="msapplication-navbutton-color" content="#007bff">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-starturl" content="/">
+    <link rel="icon" type="image/png" sizes="512x512" href="nitc-512.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="nitc-512.png">
+    <link rel="icon" href="/favicon.ico">
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
 
-    html,
-    body,
-    div,
-    form {
-      margin: 0;
-      padding: 0;
-    }
+      body,
+      div,
+      form,
+      html {
+        margin: 0;
+        padding: 0;
+      }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-weight: normal;
-    }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-weight: normal;
+      }
 
-    img {
-      border: 0;
-    }
+      img {
+        border: 0;
+      }
 
-    body {
-      height: 100%;
-      font-family: sans-serif;
-      background-size: cover;
-      background-image: url('../bg.jpg')
-    }
+      body {
+        height: 100%;
+        font-family: sans-serif;
+        background-size: cover;
+        background-image: url("../bg.jpg");
+      }
 
-    a {
-      color: #fff;
-    }
+      a {
+        color: #fff;
+      }
 
-    nav {
-      background: #007bff;
-      color: white;
-      padding: 1em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1em;
-    }
+      nav {
+        background: #007bff;
+        color: white;
+        padding: 1em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1em;
+      }
 
-    nav h1 {
-      margin: 0;
-    }
+      nav h1 {
+        margin: 0;
+      }
 
-    nav img {
-      height: 45px;
-      width: 45px;
-      margin-right: 0.5em;
-    }
+      nav img {
+        height: 45px;
+        width: 45px;
+        margin-right: 0.5em;
+      }
 
-    main {
-      box-sizing: border-box;
-      width: 100%;
-      max-width: 420px;
-      margin: auto;
-      padding: 1em;
-    }
+      main {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 420px;
+        margin: auto;
+        padding: 1em;
+      }
 
-    a.button {
-      text-decoration: none;
-    }
+      a.button {
+        text-decoration: none;
+      }
 
-    .button {
+      .button {
 
-      display: block;
-      text-align: center;
-      box-sizing: border-box;
-      width: 100%;
-      margin-bottom: 0.5em;
-      padding: 1em;
-      border-radius: 5px;
-      text-transform: uppercase;
-      font-weight: bold;
-      border: 0;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: #fff;
-    }
+        display: block;
+        text-align: center;
+        box-sizing: border-box;
+        width: 100%;
+        margin-bottom: 0.5em;
+        padding: 1em;
+        border-radius: 5px;
+        text-transform: uppercase;
+        font-weight: bold;
+        border: 0;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+      }
 
-    .message {
-      margin-top: 1em;
-      padding: 1em;
-      border-radius: 5px;
-      color: #fff;
-      background-color: #000;
-      background-color: rgba(0, 0, 0, 0.7);
-    }
-    h1 {
-      margin-top: 0;
-    }
-  </style>
-  <link rel="manifest" href="/manifest.json" />
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145913340-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+      .message {
+        margin-top: 1em;
+        padding: 1em;
+        border-radius: 5px;
+        color: #fff;
+        background-color: #000;
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+      h1 {
+        margin-top: 0;
+      }
+    </style>
+    <link rel="manifest" href="/manifest.json"/>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-145913340-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
 
-    gtag('config', 'UA-145913340-1');
-  </script>
-</head>
+      gtag('config', 'UA-145913340-1');
+    </script>
+  </head>
 
-<body>
-  <nav>
-    <img src="./nitc-logo.png" width="45px" height="45px" alt="">
-    <h1>NIT-C | Hostel Dues</h1>
-  </nav>
+  <body>
+    <nav>
+      <img src="./nitc-logo.png" width="45px" height="45px" alt="">
+      <h1>NIT-C | Hostel Dues</h1>
+    </nav>
 
-  <main>
+    <main>
 
-    <div class="message">
-      <h1>About</h1>
-      <p>NIT-C Hostel dues retriver was originally built with Python by <a
-          href="https://www.linkedin.com/in/sandeepg97/">@sandeep</a>. </p>
-      <p>It is now been rewritten with Firebase and NodeJS and is maintained by <a
-          href="https://anandu.net">@anandubajith</a></p>
-      <h2>Version history</h2>
-      <ul>
-        <li>V1 - <b>Basic functionality</b> - Python - <a href="https://github.com/sndp487/hostel-dues">Github</a></li>
-        <br>
-        <li>V2 - <b>Added push notifications</b> - NodeJS+Firebase - <a href="https://github.com/anandubajith/nitc-hostel-dues">Github</a></li>
-      </ul>
-      <a href="/" class="button">Go back</a>
-    </div>
-  </main>
-</body>
+      <div class="message">
+        <h1>About</h1>
+        <p>NIT-C Hostel dues retriver was originally built with Python by
+          <a href="https://www.linkedin.com/in/sandeepg97/">@sandeep</a>.
+        </p>
+        <p>It is now been rewritten with Firebase and NodeJS and is maintained by
+          <a href="https://anandu.net">@anandubajith</a>
+        </p>
+        <h2>Version history</h2>
+        <ul>
+          <li>V3 -
+            <b>Start keeping old dues also</b>
+            - NodeJS+Firebase -
+            <a href="https://github.com/anandubajith/nitc-hostel-dues">Github</a>
+          </li>
+          <br>
+          <li>V2 -
+            <b>Added push notifications</b>
+            - NodeJS+Firebase -
+            <a href="https://github.com/anandubajith/nitc-hostel-dues">Github</a>
+          </li>
+          <br>
+          <li>V1 -
+            <b>Basic functionality</b>
+            - Python -
+            <a href="https://github.com/sndp487/hostel-dues">Github</a>
+          </li>
+        </ul>
+        <a href="/" class="button">Go back</a>
+      </div>
+    </main>
+  </body>
 
 </html>
