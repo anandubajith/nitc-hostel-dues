@@ -80,7 +80,7 @@ function getUpdationDate(data) {
   }
 }
 
-exports.archivePDFs = functions.pubsub.schedule('00 12 * * *').timeZone('Asia/Kolkata').onRun(() => {
+exports.archivePDFs = functions.pubsub.schedule('every 2 hours').timeZone('Asia/Kolkata').onRun(() => {
 
   let fetchTime = Date.now();
   functions.logger.info("Going to archive pdf at " + fetchTime);
