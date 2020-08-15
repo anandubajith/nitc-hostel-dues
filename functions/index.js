@@ -17,10 +17,10 @@ const runtimeOpts = {
 }
 
 const files = {
+  "DETAILED": "http://www.nitc.ac.in/app/webroot/img/upload/DETAILED-DUES.pdf",
   "BTECH": "http://nitc.ac.in/app/webroot/img/upload/BTECH.pdf",
   "PG": "http://www.nitc.ac.in/app/webroot/img/upload/PG.pdf",
   "PHD": "http://www.nitc.ac.in/app/webroot/img/upload/PHD.pdf",
-  "DETAILED": "http://www.nitc.ac.in/app/webroot/img/upload/DETAILED-DUES.pdf"
 }
 
 function extract(file) {
@@ -37,10 +37,12 @@ async function checkFileChange(course, url, fetchTime) {
 
   const filePath = `/tmp/${course}.pdf`;
   fs.writeFileSync(filePath, await download(url));
+
   const hash = await hasha.fromFile(filePath, { algorithm: 'md5' });
   if (hash !== oldHash) {
     await bucket.upload(filePath, {
       destination: `${course}_${fetchTime}.pdf`,
+      resumable: false,
     });
   }
   await database.ref(`details/${course}`).set(hash);
@@ -171,6 +173,19 @@ exports.archivePDFs = functions.pubsub.schedule('every 2 hours').timeZone('Asia/
   return Promise.all(promises);
 });
 
+exports.manualArchivePDFs = functions.runWith(runtimeOpts).https.onRequest(async (req, res) => {
+  
+  let fetchTime = Date.now();
+  functions.logger.info("Going to archive pdf at " + fetchTime);
+  const promises = Object.keys(files).map(course => {
+    return checkFileChange(course, files[course], fetchTime);
+  })
+
+  promises.push(database.ref(`details/fetchTime`).set(fetchTime));
+
+  await Promise.all(promises);
+  return res.send('hi')
+});
 
 exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(async (object) => {
   const fileBucket = object.bucket; // The Storage bucket that contains the file.
