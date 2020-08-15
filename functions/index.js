@@ -219,27 +219,27 @@ exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(as
   return Promise.all(promises);
 });
 
-// exports.sendNotification = functions.database.ref('details/{course}').onWrite(async (snapshot, context) => {
-//   // just a workaround to trigger notification only once
-//   if (context.params.course !== 'BTECH') {
-//     return;
-//   }
-//   try {
-//     functions.logger.log(`Dues updated, sending notification`);
-//     await fetch('https://onesignal.com/api/v1/notifications', {
-//       method: 'POST',
-//       headers: {
-//         'Accept': 'application/json',
-//         "Content-Type": "application/json; charset=utf-8",
-//         'Authorization': `Basic ${functions.config().onesignal.api_key}`
-//       },
-//       body: JSON.stringify({
-//         app_id: functions.config().onesignal.app_id,
-//         contents: { en: `Hostel Dues updated\nTap to view` },
-//         included_segments: ["All"]
-//       })
-//     });
-//   } catch (e) {
-//     functions.logger.error(e.message);
-//   }
-// });
+exports.sendNotification = functions.database.ref('details/{course}').onWrite(async (snapshot, context) => {
+  // just a workaround to trigger notification only once
+  if (context.params.course !== 'BTECH' && context.params.course !== 'DETAILED') {
+    return;
+  }
+  try {
+    functions.logger.log(`Dues updated, sending notification`);
+    await fetch('https://onesignal.com/api/v1/notifications', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        "Content-Type": "application/json; charset=utf-8",
+        'Authorization': `Basic ${functions.config().onesignal.api_key}`
+      },
+      body: JSON.stringify({
+        app_id: functions.config().onesignal.app_id,
+        contents: { en: `Hostel Dues updated\nTap to view` },
+        included_segments: ["All"]
+      })
+    });
+  } catch (e) {
+    functions.logger.error(e.message);
+  }
+});
