@@ -260,21 +260,30 @@
                     let dues = Object
                         .keys(data.dues)
                         .map((fileName, index) => {
-                            let value = data.dues[fileName]
+                            const value = data.dues[fileName]
+                            const detailsObject = JSON.parse(data.dues[fileName].data)
+                            let details = '';
+                            // TODO: Find a better way
+                            delete detailsObject['ROLLNO'];
+                            delete detailsObject['NAME'];
+
+                            Object.keys(detailsObject).forEach(key => {
+                                details += `${key}: <b>${detailsObject[key]}</b><br>`;
+                            })
+
+
                             if ( index === 0 ) {
                                 return `
                                 <a class="item main" href="${sbiCollectURL}" target="_blank" rel="noopener" rel="noreferrer">
-                                    Due:  <b>₹${value.amount}</b><br>
-                                    Month: <b>${value.updated}</b><br>
-                                    Payment updated: <b> ${value.paymentUpdated}</b><br>
+                                    ${details}
+                                    Month:  <b>${value.updated}</b><br>
                                 </a>
                                 `
                             }
                             return `
                                 <div class="item">
-                                    Due:  <b>₹${value.amount}</b><br>
-                                    Month: <b>${value.updated}</b><br>
-                                    Payment updated: <b> ${value.paymentUpdated}</b><br>
+                                   ${details}
+                                   Month:  <b>${value.updated}</b><br>
                                 </div>
                                 `
                         });
