@@ -41,7 +41,7 @@ async function checkFileChange(course, url, fetchTime) {
   const hash = await hasha.fromFile(filePath, { algorithm: 'md5' });
   if (hash !== oldHash) {
     await bucket.upload(filePath, {
-      destination: `${course}_${fetchTime}.pdf`,
+      destination: `${fetchTime}_${course}.pdf`,
       resumable: false,
     });
   }
