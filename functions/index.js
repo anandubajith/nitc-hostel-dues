@@ -19,7 +19,8 @@ const runtimeOpts = {
 const files = {
   "BTECH": "http://nitc.ac.in/app/webroot/img/upload/BTECH.pdf",
   "PG": "http://www.nitc.ac.in/app/webroot/img/upload/PG.pdf",
-  "PHD": "http://www.nitc.ac.in/app/webroot/img/upload/PHD.pdf"
+  "PHD": "http://www.nitc.ac.in/app/webroot/img/upload/PHD.pdf",
+  "DETAILED": "http://www.nitc.ac.in/app/webroot/img/upload/DETAILED-DUES.pdf"
 }
 
 function extract(file) {
@@ -79,6 +80,83 @@ function getUpdationDate(data) {
     updated
   }
 }
+function parseDetailedPDF(fileName, data) {
+  const promises = [];
+  const updationDates = getUpdationDate(data.pageTables[0].tables[0][0]);
+
+  const normalizedName = fileName.split('.')[0];
+  functions.logger.log("Normalized path: " + normalizedName);
+
+  let headers = [];
+  data.pageTables.forEach(page => {
+    page.tables.forEach(item => {
+      if (item[0].includes('SL NO')) {
+        headers = item;
+      } else if (headers.length === 11 && item[1].length === 9) {
+        let r = {};
+        for (i = 1; i < headers.length; i++) {
+          r[headers[i]] = item[i];
+        }
+        promises.push(
+          database.ref(`data/${item[1]}`).update({
+            name: item[2],
+            note: item[10]
+          }),
+          database.ref(`data/${item[1]}/dues/${normalizedName}`).update({
+            data: JSON.stringify(r).replace(/\\n/g, " "),
+            updated: updationDates.updated
+          })
+        );
+      }
+    });
+  });
+
+  return promises;
+}
+function parseDuePDF(fileName, data) {
+
+  const promises = [];
+  const updationDates = getUpdationDate(data.pageTables[0].tables[0][0]);
+
+  const normalizedName = fileName.split('.')[0];
+  functions.logger.log("Normalized path: " + normalizedName);
+
+  data.pageTables.forEach(page => {
+    page.tables.forEach(item => {
+      if (item[0].length === 9) {
+        promises.push(
+          database.ref(`data/${item[0]}`).update({
+            name: item[1],
+            note: item[3]
+          }),
+          database.ref(`data/${item[0]}/dues/${normalizedName}`).update({
+            data: JSON.stringify({
+              amount: item[2],
+              paymentUpdated: updationDates.paymentUpdated
+            }),
+            updated: updationDates.updated,
+          })
+        );
+      } else if (item[1].length === 9) {
+        promises.push(
+          database.ref(`data/${item[1]}`).update({
+            name: item[2],
+            note: item[4]
+          }),
+          database.ref(`data/${item[1]}/dues/${normalizedName}`).update({
+            data: JSON.stringify({
+              amount: item[3],
+              paymentUpdated: updationDates.paymentUpdated
+            }),
+            updated: updationDates.updated,
+          })
+        );
+      }
+    });
+  });
+
+  return promises;
+}
 
 exports.archivePDFs = functions.pubsub.schedule('every 2 hours').timeZone('Asia/Kolkata').onRun(() => {
 
@@ -92,6 +170,7 @@ exports.archivePDFs = functions.pubsub.schedule('every 2 hours').timeZone('Asia/
 
   return Promise.all(promises);
 });
+
 
 exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(async (object) => {
   const fileBucket = object.bucket; // The Storage bucket that contains the file.
@@ -111,71 +190,41 @@ exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(as
 
   // parse the PDF
   const data = await extract(tempFilePath);
-
+  let promises = [];
+  if (fileName.includes("DETAILED")) {
+    promises = parseDetailedPDF(fileName, data);
+  } else {
+    promises = parseDuePDF(fileName, data);
+  }
   // get the paymentUpdateDate, updatedDate
 
-  const promises = [];
-  const updationDates = getUpdationDate(data.pageTables[0].tables[0][0]);
-
-  const normalizedName = fileName.split('.')[0];
-  functions.logger.log("Normalized path: " + normalizedName);
-
-  data.pageTables.forEach(page => {
-    page.tables.forEach(item => {
-      if (item[0].length === 9) {
-        promises.push(
-          database.ref(`data/${item[0]}`).update({
-            name: item[1],
-            note: item[3]
-          }),
-          database.ref(`data/${item[0]}/dues/${normalizedName}`).update({
-            amount: item[2],
-            paymentUpdated: updationDates.paymentUpdated,
-            updated: updationDates.updated,
-          })
-        );
-      } else if (item[1].length === 9) {
-        promises.push(
-          database.ref(`data/${item[1]}`).update({
-            name: item[2],
-            note: item[4]
-          }),
-          database.ref(`data/${item[1]}/dues/${normalizedName}`).update({
-            amount: item[3],
-            paymentUpdated: updationDates.paymentUpdated,
-            updated: updationDates.updated,
-          })
-        );
-      }
-    });
-  });
   functions.logger.info("Awaiting " + promises.length + " promises")
   promises.push(fs.unlinkSync(tempFilePath));
 
   return Promise.all(promises);
 });
 
-exports.sendNotification = functions.database.ref('details/{course}').onWrite(async (snapshot, context) => {
-  // just a workaround to trigger notification only once
-  if (context.params.course !== 'BTECH') {
-    return;
-  }
-  try {
-    functions.logger.log(`Dues updated, sending notification`);
-    await fetch('https://onesignal.com/api/v1/notifications', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        "Content-Type": "application/json; charset=utf-8",
-        'Authorization': `Basic ${functions.config().onesignal.api_key}`
-      },
-      body: JSON.stringify({
-        app_id: functions.config().onesignal.app_id,
-        contents: { en: `Hostel Dues updated\nTap to view` },
-        included_segments: ["All"]
-      })
-    });
-  } catch (e) {
-    functions.logger.error(e.message);
-  }
-});
+// exports.sendNotification = functions.database.ref('details/{course}').onWrite(async (snapshot, context) => {
+//   // just a workaround to trigger notification only once
+//   if (context.params.course !== 'BTECH') {
+//     return;
+//   }
+//   try {
+//     functions.logger.log(`Dues updated, sending notification`);
+//     await fetch('https://onesignal.com/api/v1/notifications', {
+//       method: 'POST',
+//       headers: {
+//         'Accept': 'application/json',
+//         "Content-Type": "application/json; charset=utf-8",
+//         'Authorization': `Basic ${functions.config().onesignal.api_key}`
+//       },
+//       body: JSON.stringify({
+//         app_id: functions.config().onesignal.app_id,
+//         contents: { en: `Hostel Dues updated\nTap to view` },
+//         included_segments: ["All"]
+//       })
+//     });
+//   } catch (e) {
+//     functions.logger.error(e.message);
+//   }
+// });
