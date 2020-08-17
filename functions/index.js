@@ -221,7 +221,7 @@ exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(as
 
 exports.sendNotification = functions.database.ref('details/{course}').onWrite(async (snapshot, context) => {
   // just a workaround to trigger notification only once
-  if (context.params.course !== 'BTECH' && context.params.course !== 'DETAILED') {
+  if (context.params.course !== 'BTECH' || context.params.course !== 'DETAILED') {
     return;
   }
   try {
