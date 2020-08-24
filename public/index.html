@@ -283,20 +283,16 @@
                                 return `
                                 <a class="item main" href="${sbiCollectURL}" target="_blank" rel="noopener" rel="noreferrer">
                                     ${details}
-                                    Month:  <b>${value.updated}</b><br>
+                                    ${ value.updated === "Unknown" ? '' : "Month: <b>" + value.updated + "</b><br>"}
                                 </a>
                                 `
                             }
-                            if (value.updated !== 'Unknown') {
-                                return `
+                            return `
                                 <div class="item">
                                    ${details}
-                                   Month:  <b>${value.updated}</b><br>
+                                    ${ value.updated === "Unknown" ? '' : "Month: <b>" + value.updated + "</b><br>"}
                                 </div>
                                 `
-                            } else {
-                                return `<div class="item"> ${details} </div>`
-                            }
                         });
 
                     result.innerHTML = `Name: <b>${data.name}</b><br>`;
