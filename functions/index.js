@@ -109,6 +109,23 @@ function parseDetailedPDF(fileName, data) {
             updated: updationDates.updated
           })
         );
+      } else if ( item[0].includes('ROLL') ) {
+        headers = item;
+      } else if ( headers.lendth === 10 && item[0].length === 9) {
+        let r = {};
+        for (i = 1; i < headers.length; i++) {
+          r[headers[i]] = item[i];
+        }
+        promises.push(
+          database.ref(`data/${item[0]}`).update({
+            name: item[1],
+            note: item[9]
+          }),
+          database.ref(`data/${item[0]}/dues/${normalizedName}`).update({
+            data: JSON.stringify(r).replace(/\\n/g, " "),
+            updated: updationDates.updated
+          })
+        );
       }
     });
   });
@@ -174,7 +191,7 @@ exports.archivePDFs = functions.pubsub.schedule('every 2 hours').timeZone('Asia/
 });
 
 exports.manualArchivePDFs = functions.runWith(runtimeOpts).https.onRequest(async (req, res) => {
-  
+
   let fetchTime = Date.now();
   functions.logger.info("Going to archive pdf at " + fetchTime);
   const promises = Object.keys(files).map(course => {
