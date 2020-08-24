@@ -261,6 +261,7 @@
 
                     let dues = Object
                         .keys(data.dues)
+                        .reverse()
                         .map((fileName, index) => {
                             const value = data.dues[fileName]
                             const detailsObject = JSON.parse(data.dues[fileName].data)
