@@ -114,7 +114,7 @@
         .button {
             text-transform: uppercase;
             -webkit-appearance: none;
-            cursor:pointer;
+            cursor: pointer;
             font-weight: bold;
             border: 0;
             border-radius: 5px;
@@ -130,16 +130,18 @@
             background-color: #000;
             background-color: rgba(0, 0, 0, 0.7);
         }
+
         .item {
-            display:block;
+            display: block;
             border-radius: 5px;
             font-size: 15px;
-            text-decoration:none;
+            text-decoration: none;
             background: #000;
             padding: 10px;
             transform: scale(0.95);
             user-select: none;
         }
+
         .item.main {
             transform: scale(1);
         }
@@ -189,7 +191,8 @@
             <div class="help-text">
                 <i>Enter your Roll no. to check hostel dues.</i>
             </div>
-            <br> <div class="updated"></div> <br> 
+            <br>
+            <div class="updated"></div> <br>
             <div class="result"></div>
         </div>
         <div class="message">
@@ -204,10 +207,10 @@
         const result = document.querySelector('.result');
         const sbiCollectURL = "https://www.onlinesbi.com/sbicollect/icollecthome.htm?corpID=366005";
         fetch(dbURL + '/details/fetchTime.json')
-        .then(res => res.text())
-        .then(date => {
-            document.querySelector('.updated').innerHTML = 'Last fetched: <b>' + new Date(parseInt(date,10)).toLocaleDateString() + '</b>';
-        });
+            .then(res => res.text())
+            .then(date => {
+                document.querySelector('.updated').innerHTML = 'Last fetched: <b>' + new Date(parseInt(date, 10)).toLocaleDateString() + '</b>';
+            });
 
         if (localStorage.roll_no !== undefined && localStorage.roll_no != '') {
             document
@@ -276,7 +279,7 @@
                             })
 
 
-                            if ( index === 0 ) {
+                            if (index === 0) {
                                 return `
                                 <a class="item main" href="${sbiCollectURL}" target="_blank" rel="noopener" rel="noreferrer">
                                     ${details}
@@ -284,18 +287,22 @@
                                 </a>
                                 `
                             }
-                            return `
+                            if (value.updated !== 'Unknown') {
+                                return `
                                 <div class="item">
                                    ${details}
                                    Month:  <b>${value.updated}</b><br>
                                 </div>
                                 `
+                            } else {
+                                return `<div class="item"> ${details} </div>`
+                            }
                         });
 
                     result.innerHTML = `Name: <b>${data.name}</b><br>`;
                     if (data.note === "*")
                         result.innerHTML += `Note: <b>Awaiting funds from Kerala State SC, ST & OEC Departments</b><br>`;
-                    
+
                     result.innerHTML += `<br>${dues.join('<br>')}`;
                     document
                         .querySelector('.help-text')
