@@ -119,7 +119,7 @@ function parseDetailedPDF(fileName, data) {
         promises.push(
           database.ref(`data/${item[0]}`).update({
             name: item[1],
-            note: item[9]
+            note: item[headers.length-1] // always assumed to be last one
           }),
           database.ref(`data/${item[0]}/dues/${normalizedName}`).update({
             data: JSON.stringify(r).replace(/\\n/g, " "),
