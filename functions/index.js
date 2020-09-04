@@ -111,7 +111,7 @@ function parseDetailedPDF(fileName, data) {
         );
       } else if ( item[0].includes('ROLL') ) {
         headers = item;
-      } else if ( headers.length === 10 && item[0].length === 9) {
+      } else if ( (headers.length === 10 || headers.length === 9) && item[0].length === 9) {
         let r = {};
         for (i = 1; i < headers.length; i++) {
           r[headers[i]] = item[i];
