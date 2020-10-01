@@ -230,7 +230,7 @@ exports.parsePDF = functions.runWith(runtimeOpts).storage.object().onFinalize(as
   }
   // get the paymentUpdateDate, updatedDate
 
-  functions.logger.info("Awaiting " + promises.length + " promises")
+  functions.logger.info(`Awaiting ${promises.length} promises`)
   promises.push(fs.unlinkSync(tempFilePath));
 
   return Promise.all(promises);
