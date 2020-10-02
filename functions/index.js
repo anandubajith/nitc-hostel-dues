@@ -177,7 +177,7 @@ function parseDuePDF(fileName, data) {
   return promises;
 }
 
-exports.archivePDFs = functions.pubsub.schedule('every 2 hours').timeZone('Asia/Kolkata').onRun(() => {
+exports.archivePDFs = functions.pubsub.schedule('every 48 hours').timeZone('Asia/Kolkata').onRun(() => {
 
   let fetchTime = Date.now();
   functions.logger.info("Going to archive pdf at " + fetchTime);
