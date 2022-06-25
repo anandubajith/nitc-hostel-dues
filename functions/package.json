@@ -17,7 +17,7 @@
     "firebase-admin": "^8.10.0",
     "firebase-functions": "^3.9.1",
     "hasha": "^5.2.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "pdf-table-extractor": "^1.0.3"
   },
   "devDependencies": {
