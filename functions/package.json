@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "download": "^8.0.0",
-    "firebase-admin": "^8.10.0",
+    "firebase-admin": "^11.4.1",
     "firebase-functions": "^3.9.1",
     "hasha": "^5.2.0",
     "node-fetch": "^2.6.0",
